@@ -1,0 +1,629 @@
+---
+title: "From 16S Amplicon Raw Data to ASVs (Amplicon Sequence Variants)"
+author: "IMC Bioinformatics"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+   rmd: "qc_report.Rmd"
+output:
+html_document:
+    theme: flatly
+    highlight: tango
+    toc: yes
+    number_sections: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: no
+    smooth_scroll: yes
+---
+
+<br>
+<br>
+
+```{r needed packages,echo=F,include=F}
+
+suppressMessages(library(DT))
+suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(psadd))
+suppressMessages(library(phyloseq))
+suppressMessages(library(dada2))
+suppressMessages(library(RColorBrewer))
+suppressMessages(library(limma))
+suppressMessages(library(tidyverse))
+suppressMessages(library(reshape2))
+suppressMessages(library(kableExtra))
+suppressMessages(library(waterfalls))
+suppressMessages(library(ggpubr))
+
+
+Sys.setenv(RSTUDIO_PANDOC=snakemake@config[["pandoc"]])
+
+
+```
+
+# **Investigating reads**
+
+<br>
+
+## Overall read quality plots {.tabset .tabset-fade}
+
+<br>
+
+### Read quality raw 
+
+<br>
+
+```{r,results='asis', echo=F}
+
+files <- list.files(path = snakemake@params[["quality"]], pattern = "raw", full.names = TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, "){width=50%}"))
+ }
+
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+### Read Quality after read trimming
+
+<br>
+
+```{r, results='asis',echo=F}
+
+files <- list.files(path = snakemake@params[["quality"]], pattern = "afterQC", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, "){width=50%}"))
+ }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+### Read Quality after read filtering
+
+<br>
+
+```{r, results='asis', echo=F}
+
+files <- list.files(path = snakemake@params[["quality"]], pattern = "afterdada2", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, "){width=50%}"))
+ }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+```{r read length distribution plot execution, echo=F}
+nsample<- snakemake@config[["random_n"]]
+
+x = seq_along(1:nsample)
+
+```
+
+## Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
+
+<br>
+
+
+<br>
+
+```{r, results='asis', echo=F,eval =ifelse(1 %in% x, TRUE, FALSE)}
+
+cat("### Sample 1\n")
+
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S1", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, ")\n"))
+ }
+
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+```{r, results='asis', echo=F,eval =ifelse(2 %in% x, TRUE, FALSE)}
+
+cat("### Sample 2\n")
+
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S2", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, ")\n"))
+ }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+```{r, results='asis', echo=F,eval =ifelse(3 %in% x, TRUE, FALSE)}
+
+cat("### Sample 3\n")
+
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S3", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, ")\n"))
+ }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+```{r, results='asis', echo=F,eval =ifelse(4 %in% x, TRUE, FALSE)}
+
+cat("### Sample 4\n")
+
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S4", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, ")\n"))
+ }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+```{r, results='asis', echo=F,eval =ifelse(5 %in% x, TRUE, FALSE)}
+
+cat("### Sample 5\n")
+
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S5", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![](", f, ")\n"))
+ }
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+```{r,echo=F,messages=FALSE, warning=FALSE}
+
+reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undetermined|undetermined', file))
+
+```
+
+## Reads count change throughout the dada2 pipeline in all samples
+
+<br>
+
+```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=9,fig.height=7}
+reads1<-reads
+
+colnames(reads1)[1:7]<-c("Sample", "Raw", "Quality_Trimmed", "Filtered", "Denoised", "Merged", "Cleaned")
+
+reads1 <- reads1 %>% mutate_all(~ifelse(is.na(.), 0, .))
+
+read_loss<-data.frame(step=names(colSums(reads1[,-c(1, 8)])),count=colSums(reads1[,-c(1, 8)]))
+read_loss<-read_loss[-6,]
+
+# Create a color palette for the bars (you can customize these colors)
+colors <- c("Raw" = "#f5f0e1", "Quality_Trimmed" = "#ff6e40",
+            "Filtered" = "#ff6e40", "Denoised" = "#ff6e40",
+            "Merged" = "#ff6e40")
+
+
+
+# Create a new data frame with the "step" and "loss" columns
+new_data <- data.frame(
+  step = read_loss$step,
+  loss = c(read_loss$count[1],
+           diff(read_loss$count)[1:4])) %>%
+mutate(label = paste(step, "\n(n=", loss, ")"))
+
+waterfall(new_data, calc_total = TRUE,
+          fill_by_sign = F,
+          rect_text_size = 1.5,
+          fill_colours = colors,
+          total_rect_color = "#ffc13b",
+          total_rect_text_color = "black")+
+  theme_bw()+xlab("Read Counts")+ylab("Processing steps")+ggtitle("Read count change in each step")+
+  theme(axis.text.x = element_text(angle = 45, size = 14, colour = "black",  hjust = 1, face= "bold"), 
+        axis.title.y = element_text(size = 14, face = "bold"), 
+        legend.title = element_text(size = 16, face = "bold"),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 14, face = "bold", colour = "black"),
+        legend.position = "bottom",
+        axis.text.y = element_text(colour = "black", size = 14, face = "bold"),
+        plot.title = element_text(size=14,face="bold"),
+        plot.caption = element_text(hjust = 0,vjust=0.5,size = 12, face= "bold", colour = "red"),
+        panel.background = element_blank(),
+        panel.border =element_rect(fill = NA, color = "black"), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        axis.line = element_line(colour = "black"))
+  
+
+
+htmltools::HTML("<br>")
+htmltools::HTML("<br>")
+
+
+reads1[,8]<-data.frame(reads1$Cleaned/reads1$Raw)*100
+colnames(reads1)[8]<-"Clean_Reads_Percent"
+reads1[,8]<-round(reads1[,8],digits = 2)
+
+
+
+datatable(reads1, 
+          rownames= FALSE,
+          filter = 'top',
+          extensions = 'Buttons',
+          options = list(scrollX = TRUE,
+                         pageLength = 5,
+                         dom = 'Blfrtip',
+                         buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+                         rownames = F),
+                         caption = htmltools::tags$caption(style = 'caption-side: bottom; text-align: left;',
+                         htmltools::em('Tracking Read Counts Across the DADA2 Pipeline:'), htmltools::br(), 
+                         htmltools::em('Raw: Initial number of reads in each sample.'), htmltools::br(),
+                         htmltools::em('Quality_Trimmed: Reads left after primer removal (if applicable) and quality trimming prior to DADA2 processing.'), htmltools::br(),
+                         htmltools::em('Filtered: Reads left after eliminating sequences with ambiguous bases, high error rates, and short length.'), htmltools::br(),
+                         htmltools::em('Denoised: Reads left with high quality and error-corrected sequences.'), htmltools::br(),
+                         htmltools::em('Merged: Reads left after removal of singletons and unmerged forward and reverse read pairs.'), htmltools::br(),
+                         htmltools::em('Cleaned: Reads left after eliminating chimeric sequences,artifact sequences created during PCR due to partially extended strands binding to similar but different sequences.')))
+
+
+reads2<-data.frame(rep("Starting number of reads",times=nrow(reads1)),reads1$Raw)
+colnames(reads2)<-c("Var","value")
+
+
+reads3<-data.frame(rep("Finishing number of reads",times=nrow(reads1)),reads1$Cleaned)
+colnames(reads3)<-c("Var","value")
+
+
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## Distribution of initial and final read counts
+
+<br>
+
+```{r boxplot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,fig.width=11,fig.height=7}
+
+n=max(reads2$value)/10
+
+# Determine max bin count
+max_count <- max(hist(reads2$value, breaks=seq(0, max(reads2$value), by=n), plot=FALSE)$counts)
+
+A<-ggplot(reads2, aes(x=value)) + 
+  geom_histogram(color="black", fill="#E69F00",binwidth = n,boundary=0)+ #boundary start starts the bin from zero
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
+        axis.title.y = element_text(size = 12, face = "bold"), legend.title = element_text(size = 16, face = "bold"),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 12, face = "bold", colour = "black"),
+        axis.text.y = element_text(colour = "black", size = 12, face = "bold"),
+        plot.title = element_text(size=14,face="bold"),
+        plot.caption = element_text(hjust = 0,vjust=1.5,size = 12, face = "bold", colour = "red"),
+        legend.position = "None")+xlab("Raw reads (count)")+ylab("Sample count")+
+  ggtitle("Starting number of reads distribution")+
+  theme(panel.background = element_blank(),
+        panel.border =element_rect(fill = NA, color = "black"), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        axis.line = element_line(colour = "black"))+
+  # update: adds counts above bars
+  stat_bin(binwidth = n,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9,hjust=0.5)+ 
+coord_cartesian(ylim=c(0, max_count + 30))#+labs(caption="Binwidth is 5.")
+
+
+
+n=max(reads3$value)/10
+
+# Determine max bin count
+max_count <- max(hist(reads3$value, breaks=seq(0, max(reads3$value), by=n), plot=FALSE)$counts)
+
+B<-ggplot(reads3, aes(x=value)) +
+  geom_histogram(color="black", fill="#E69F00",binwidth = n,boundary=0)+ #boundary start starts the bin from zero
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
+        axis.title.y = element_text(size = 12, face = "bold"), legend.title = element_text(size = 16, face = "bold"),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 12, face = "bold", colour = "black"),
+        axis.text.y = element_text(colour = "black", size = 12, face = "bold"),
+        plot.title = element_text(size=14,face="bold"),
+        plot.caption = element_text(hjust = 0,vjust=1.5,size = 12, face = "bold", colour = "red"),
+        legend.position = "None")+xlab("Clean reads (count)")+ylab("Sample count")+
+  ggtitle("Final number of clean reads distribution")+
+  theme(panel.background = element_blank(),
+        panel.border =element_rect(fill = NA, color = "black"), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        axis.line = element_line(colour ="black"))+
+  # update: adds counts above bars
+  stat_bin(binwidth = n,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9,hjust=0.5)+ 
+coord_cartesian(ylim=c(0, max_count + 30))#+labs(caption="Binwidth is 5.")
+
+
+ggarrange(A,B)
+
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+# **Investigating ASVs**
+
+<br>
+
+## Bacterial composition in the positive controls
+
+<br>
+
+
+```{r, warning=F, message=F, results='asis',echo=F,fig.width=10, fig.height=7}
+
+#Read sequence data and taxonomy data
+seqtab <- data.frame(read.csv(file = snakemake@params[["seqtab"]],row.names = 1))
+taxa <- read.table(snakemake@params[["taxonomy"]], header = TRUE, sep = "\t", check.names = FALSE)
+
+# Prepare the sample data
+data <- data.frame(samples = rownames(seqtab))
+rownames(data) <- data$samples
+
+
+# Create a phyloseq object
+ps <- phyloseq(otu_table(as.matrix(seqtab), taxa_are_rows = FALSE),
+               sample_data(data),
+               tax_table(as.matrix(taxa)))
+
+
+
+# Prepare color palette
+n <- 74
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+
+
+# List of positive control samples
+samples <- unlist(base::strsplit(snakemake@params[["pos"]], split = "\\|"))
+
+
+if (length(samples) > 0 && !all(samples == "")) {
+  
+  # Define known bacterial community counts for each reference file
+  ref_files <- list.files(snakemake@params[["ref"]])
+  names(ref_files)<-stringr::str_split_fixed(ref_files, "\\.", 2)[, 1]
+  
+  #read in community composition of reference files in alphabetic order
+  source(snakemake@params[["source"]])
+  
+  
+  for (i in samples) {
+    mock <- prune_samples(ps@sam_data$samples == i, ps)
+    mock <- prune_taxa(colSums(mock@otu_table) > 0, mock)
+    
+    # Iterate over each reference file
+    for (j in names(ref_files)) {
+      mock.ref <- getSequences(paste0(snakemake@params[["ref"]],ref_files[[j]]))
+      unqs.mock <- mock@otu_table@.Data
+      
+      # Retrieve the expected bacterial community counts for the current reference file
+      expected_counts <- community_counts[[j]]
+      
+      match.ref <- as.data.frame(sapply(colnames(unqs.mock), function(x) grepl(x, mock.ref)))
+      
+      match.ref$species <- stringr::str_split_fixed(names(mock.ref), "_16", 2)[, 1]
+      
+      maps <- gather(data = match.ref, key = "seqs", value = "present", -species) %>%
+        dplyr::filter(present == TRUE)
+
+        #sometimes there is overlap between positive control reference files bacterial composition so samples get matched with a reference when there is >60% similar bacterial composition
+
+        if(nrow(maps)>0 && mean(unique(match.ref$species) %in% unique(maps$species))*100 > 60){
+        maps$abundance <- c(mock@otu_table[, maps$seqs])
+        
+        tot_abund<-maps %>% summarise(abundance=sum(abundance))
+        
+        temp=maps %>% dplyr::group_by(species) %>% dplyr::summarise("Observed"=round(100*(sum(abundance)/unlist(tot_abund)),digits = 1))
+        colnames(temp)[1]<-"Taxa"
+        
+        temp<-left_join(expected_counts,temp,by="Taxa") %>%
+        mutate(Observed = replace_na(Observed, 0))
+               
+        # Plotting
+        A <- ggplot(reshape2::melt(as.data.frame(temp)), aes(x = variable, y = value, fill = Taxa)) +
+          geom_bar(colour = "black", position = "stack", stat = "identity", width = 0.8) +
+          xlab(NULL) +
+          ggtitle(paste0("Bacterial profile in ", i)) +
+          theme(legend.position = "right",
+                axis.text.x = element_text(angle = 90, size = 15, colour = "black", vjust = 0.9, hjust = 0.83, face = "bold"),
+                axis.title.y = element_text(size = 15, face = "bold"),
+                axis.title.x = element_text(size = 15, face = "bold"),
+                legend.title = element_text(size = 12, face = "bold"),
+                legend.text = element_text(size = 12, face = "bold", colour = "black"),
+                axis.text.y = element_text(colour = "black", size = 13, face = "bold"),
+                plot.caption = element_text(hjust = 0, vjust = 0, size = 17, face = "bold", colour = "red"),
+                plot.title = element_text(size = 15, face = "bold"),
+                strip.text.x = element_text(size = 15, colour = "black")) +
+          ylab("Counts") +
+          scale_fill_manual(values = col_vector) +
+          theme(panel.background = element_blank(),
+                panel.border = element_rect(fill = NA, color = "black"),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                axis.line = element_line(colour = "black"))+guides(fill=guide_legend(nrow=21,byrow=F))
+        print(A)
+        
+        cat("<br><br>")
+        
+        B <- kable(temp, format = "html", caption = "Abundance table of taxa found in the positive control sample") %>%
+          kable_styling() %>%
+          column_spec(1:ncol(temp), width = "6cm")
+        print(B)
+        
+        cat("<br><br>")
+        cat("<br><br>")
+        cat("<br><br>")
+        cat("<br><br>")
+        
+      }
+    }
+  }
+  
+} else {
+  cat("There was no positive control in this run")
+  cat("<br><br>")
+  cat("<br><br>")
+  cat("<br><br>")
+  cat("<br><br>")
+  
+}
+
+
+```
+
+
+
+## ASVs prevalence and Abudnance
+
+<br>
+
+
+```{r, investigating ASVs,echo=F,messages=FALSE, warning=FALSE,include=T}
+
+
+seqtab <- data.frame(read.csv(file = snakemake@params[["seqtab"]],row.names = 1))
+
+# Calculate prevalence for each taxa
+Prevalence <- seqtab %>%
+  summarise_all(~sum(. > 0)) %>%    # Prevalence: Count of non-zero entries for each taxa
+  t() %>%
+  as.data.frame() %>%
+  mutate(Taxa = rownames(.))
+
+colnames(Prevalence) <- c("Prevalence", "Taxa")
+
+# Calculate abundance for each taxa
+Abundance <- seqtab %>% 
+  t() %>%
+  rowSums() %>%  
+  as.data.frame() 
+
+Abundance$Taxa <- rownames(Abundance)
+
+colnames(Abundance) <- c("Abundance", "Taxa")
+
+# Joining prevalence and abundance
+df <- left_join(Prevalence, Abundance, by = "Taxa")
+
+# Melting the data for boxplot visualization
+df1 <- reshape2::melt(df, id.vars = "Taxa", value.name = "count")
+
+# Scatter plot
+ggplot(df, aes(x = Abundance, y = Prevalence)) +
+  geom_point(aes(color = ifelse(Prevalence > 10 & Abundance > 150, "#77c593", "black"))) +
+  scale_color_identity() +
+  ggtitle("Overview of ASVs focusing on their prevalence and abundance")+
+  labs(caption = paste0("Points in green represent ASVs with prevalence > 10 and abundance > 150.\n",
+  "Total number of ASVs is ", length(df$Taxa), " in ", nrow(seqtab) ," samples."))+
+  theme(plot.caption = element_text(hjust = 0,size=12),
+        axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
+        axis.title.y = element_text(size = 12, face = "bold"),
+        legend.title = element_text(size = 16, face = "bold"),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 12, face = "bold", colour = "black"),
+        axis.text.y = element_text(colour = "black", size = 12, face = "bold"),
+        plot.title = element_text(size=14,face="bold"),
+        panel.background = element_blank(),
+        panel.border =element_rect(fill = NA, color = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = "black"))
+
+```
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## ASVs length distribution for all samples
+
+<br>
+
+```{r all ASVs length distribution abundance, results='asis', echo=F}
+
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "distribution", full.names =TRUE)
+
+
+for (f in files) {
+   cat(paste0("![](", f, "){width=1000%}\n"))
+ }
+
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+## Taxonomy profile
+
+<br>
+
+```{r krona-plot, echo=FALSE,message=F, warning=F}
+
+options(browser = "echo") #plot_krona is set to open the krona plot as a separate html file, this stops it
+
+# Plot Krona chart
+a <- plot_krona(physeq=ps, output=snakemake@params[['krona']], variable="samples", trim = TRUE)
+
+file=snakemake@config[['path']]
+
+```
+
+<iframe src="`r paste0(file, "/output/QC_html_report/krona_Species_result.html")`" width="1100" height="700" scrolling="yes"></iframe>
+
+
+<div Class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>

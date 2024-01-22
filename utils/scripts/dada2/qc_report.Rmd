@@ -36,9 +36,6 @@ suppressMessages(library(waterfalls))
 suppressMessages(library(ggpubr))
 
 
-Sys.setenv(RSTUDIO_PANDOC=snakemake@config[["pandoc"]])
-
-
 ```
 
 # **Investigating reads**

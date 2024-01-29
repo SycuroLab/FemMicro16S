@@ -34,11 +34,12 @@ Input:
 Output:
 For more details on output files please check section 4.
 
-* Taxonomic assignment tables ().
-* ASV abundance table (seqtab_nochimera.rds).
-* ASV sequences in a fasta file from seqtab_nochimera.rds (ASV_seq.fasta).
-* Summary of reads filtered at each step (Nreads.tsv).
-* A phylogenetic tree (ASV_tree.nwk).
+* Taxonomy assignment tables
+* ASV abundance table
+* Summary of reads count at each step of the ppipeline
+* ASV sequences in a fasta format
+* A phylogenetic tree
+* A QC report file
 
 <br> 
 

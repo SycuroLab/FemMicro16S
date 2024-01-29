@@ -13,9 +13,15 @@ data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/da
 
 <br>
 
-In the dada2 pipeline, species assignment is accomplished through the application of a naive Bayesian classifier method (https://pubmed.ncbi.nlm.nih.gov/17586664/), where a strict requirement of a 100% nucleotide identity match between the reference sequences and the query is employed. To enhance the adaptability of the species assignment process, we leveraged an established tool to adjust the identity threshold to 99.3% (modifiable).
+In this pipeline, species assignment is accomplished through the application of two methods:
+
+1- DADA2: a naive Bayesian classifier method (https://pubmed.ncbi.nlm.nih.gov/17586664/), where a strict requirement of a 100% nucleotide identity match between the reference sequences and the query is employed. Four different databases were used for taxonomy assignmnet. However, for final assignmnet, GTDB assignment was used and where GTDB was unable to provide an annotation for an ASV, we utilized the corresponding annotation from the URE database.
+
+2- VSEARCH: a global sequence alignment method with adjustable identity threshold between query and potential target sequences.
 VSEARCH, an open-source alternative to the widely utilized USEARCH tool, is employed in this context. VSEARCH excels in performing optimal global sequence alignments for the query against potential target sequences.
-For a more comprehensive understanding of this methodology, please refer to the paper available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5075697/.
+For a more comprehensive understanding of this methodology, please refer to the paper available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5075697/ and the manual at https://github.com/torognes/vsearch/releases/download/v2.27.0/vsearch_manual.pdf. GTDB database was used for final taxonomy assignmnet and where GTDB was unable to provide an annotation for an ASV, we utilized the corresponding annotation from the URE database.
+
+Finally for combining the annotation results from Vsearch and DADA2, we prioritized annotations from VSEARCH over those from the DADA2 RDP classification. This approach ensures a comprehensive and accurate taxonomy assignment by leveraging the strengths of multiple databases and methodologies.
 
 <br>
 
@@ -26,8 +32,9 @@ Input:
 * samples.tsv [example](example_files/samples.tsv)
 
 Output:
+For more details on output files please check section 4.
 
-* Taxonomic assignment tables using RDP classifier (by GTDB, RDP, SILVA, and URE databases), in addition to VSEARCH (by GTDB and URE databases).
+* Taxonomic assignment tables ().
 * ASV abundance table (seqtab_nochimera.rds).
 * ASV sequences in a fasta file from seqtab_nochimera.rds (ASV_seq.fasta).
 * Summary of reads filtered at each step (Nreads.tsv).
@@ -283,42 +290,35 @@ Then snakemake can be executed by the following bash script:
 </details>
 
 
+#### 4. All outputs
+
 <details>
 <summary><h3 style="font-size: 24px;">4. Output files and logs</h3></summary> 
  
 To make sure that the pipeline is run completely, we need to check the log and output files.
 
-#### 4.1 Log files
-All logs are placed in the logs directory. 
-A copy of all snakemake files and logs will be copied to the output directory (output/snakemake_files/) as well to avoid rewritting them by upcoming re-runs.
+| Path | File | Description |
+| -------------- | --------------- | ------------ |
+| . | record_dada2.id.err,record_dada2.id.out | report of pipeline run duratuion and reason if pipeline stopped running |
+| ./logs | file.out, file.err | All pipeline steps' log files showing output and possible errors |
+| ./output/snakemake_files | snakemake result files | A copy of all snakemake files and logs to avoid rewritting them by upcoming re-runs |
+| ./output/dada2 | seqtab_nochimeras.csv| ASVs abundance across sampels |
+| ./output/dada2 | Nreads.tsv | Read count at each step of the QC and following dada2 pipeline |
+| ./output/phylogeny | ASV_seq.fasta | Fasta sequences of the ASVs generated (headers are the same as the sequences) |
+| ./output/phylogeny | ASV_tree.nwk | Phylogenetic tree in newick format |
+| ./output/QC_html_report | qc_report.html | Quality, counts and length distribution of reads, prevalence/abundance and length distribution of ASVs in all samples, all samples bacterial composition profile |
+| ./output/taxonomy | GTDB_RDP.tsv, GTDB_RDP_boostrap.rds | RDP classified annotations using GTDB DB and taxonomy assignmnet scores out of 100 |
+| ./output/taxonomy | RDP_RDP.tsv, RDP_RDP_boostrap.rds | RDP classified annotations using RDP DB and taxonomy assignmnet scores out of 100 |
+| ./output/taxonomy | Silva_RDP.tsv, Saliva_RDP_boostrap.rds | RDP classified annotations using Saliva DB and taxonomy assignmnet scores out of 100 |
+| ./output/taxonomy | URE_RDP.tsv, URE_RDP_boostrap.rds | RDP classified annotations using URE DB and taxonomy assignmnet scores out of 100 |
+| ./output/vserach/GTDB/ | Vsearh_GTDB_raw.tsv | Raw output result from vsearch with tab-separated uclust-like format using GTDB database |
+| ./output/vsearch/URE/ | Vsearh_URE_raw.tsv | Raw output result from vsearch with tab-separated uclust-like format using URE database only for ASVs that were not annotated by vsearch using GTDB DB |
+| ./output/vsearch/ | vsearch/Final_uncollapsed_output.tsv | Vsearch assignment for ASVs, hits in separate rows |
+| ./output/vsearch/ | vsearch/Final_colapsed_output.tsv | Vsearch assignment for unique ASVs per row with different hits at species level collapsed |
+| ./output/taxonomy/ | vsearch_output.tsv | Taxonomy assignmnet reaults using vsearch and GTDB |
+| ./output/taxonomy | annotation_combined_dada2.txt | ASV abundance and their annotation from all 4 databases (GTDB, RDP, Saliva, URE) side by side across samples |
+| ./output/taxonomy | vsearch_dada2_merged.tsv | merged vsearch (GTDB/URE) and dada2 annotations (GTDB/RDP?Silva/URE), corresponding abundance across samples, and final annotation with priority of vsearch (GTDB then URE, if GTDB annotation is NA) over dada2 (GTDB then URE) |
 
-<br>
-
-#### 4.2 Important result files:
 
 
-##### 4.2.1 output/dada2
-   - seqtab_nochimeras.rds
-   - Nreads.tsv
-
-<br>
-
-##### 4.2.2 output/taxonomy
-   - GTDB_RDP.tsv
-   - RDP_RDP.tsv
-   - Silva_RDP.tsv
-   - URE_RDP.tsv
-   - annotation_combined_dada2.txt (results from all 4 databases side by side)
-   - vsearch_dada2_merged.tsv (adding vsearch results and merging vsearch and dada2 GTDB taxonomy assignmnets as final annotations)
-
-<br>
-
-##### 4.2.3 output/phylogeny    
-   - ASV_seq.fasta
-   - ASV_tree.nwk
-
-<br>
-
-##### 4.2.4 output/QC_html_report
-   - qc_report.html
 </details>

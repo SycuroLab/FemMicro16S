@@ -19,12 +19,12 @@ rule vsearchGTDB:
 
 
 
-rule GTDB_NoHITs:
+rule separate_vsearch_hits:
     input:
         GTDB_file=rules.vsearchGTDB.output.output1,
         annotation=rules.combining_annotations.output.table
     output:
-        Combined=config["output_dir"]+"/vsearch/GTDB/GTDB_temp.tsv",
+        All_ASVs=config["output_dir"]+"/vsearch/GTDB/All_results_GTDB.tsv",
         GTDB_noHIT=config["output_dir"]+"/vsearch/GTDB/no_hits_GTDB.fasta"
     conda:
         "dada2"  
@@ -35,7 +35,7 @@ rule GTDB_NoHITs:
 
 rule vsearchURE:
     input:
-        fas=rules.GTDB_NoHITs.output.GTDB_noHIT
+        fas=rules.separate_vsearch_hits.output.GTDB_noHIT
     output:
         output1= config["output_dir"]+"/vsearch/URE/Vsearch_URE_selected.tsv",
         output2= config["output_dir"]+"/vsearch/URE/Vsearch_URE_raw.tsv"
@@ -64,7 +64,7 @@ rule vsearchURE:
 
 rule vsearchParse:
     input:
-        GTDB_df=rules.GTDB_NoHITs.output.Combined,
+        GTDB_df=rules.separate_vsearch_hits.output.All_ASVs,
         annotation=rules.combining_annotations.output.table,
         URE_df=lambda wildcards: [rules.vsearchURE.output.output1] if config.get("URE_after_GTDB", True) else []
     output:

@@ -291,8 +291,6 @@ Then snakemake can be executed by the following bash script:
 </details>
 
 
-#### 4. All outputs
-
 <details>
 <summary><h3 style="font-size: 24px;">4. Output files and logs</h3></summary> 
  

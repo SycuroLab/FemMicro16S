@@ -46,7 +46,7 @@ annotation_table<-annotation_table[,1:3]
 
 df<-data.frame(annotation_table) %>% left_join(output_table_GTDB,by="asv_seq",multiple = "all")
 
-write.table(df,file=snakemake@output[["Combined"]], row.names= F, sep= "\t")
+write.table(df,file=snakemake@output[["All_ASVs"]], row.names= F, sep= "\t")
 
 
 # Create a new data frame of sequences with no hits in the output table, based on the 'Taxa' column being NA

@@ -212,7 +212,7 @@ for (f in files) {
 
 ```{r,echo=F,messages=FALSE, warning=FALSE}
 
-reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undetermined|undetermined', file))
+reads<-read.csv(snakemake@params[["Nread"]],sep="\t")
 
 ```
 

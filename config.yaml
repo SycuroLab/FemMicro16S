@@ -23,7 +23,7 @@ forward_read_suffix: "_R1"
 reverse_read_suffix: "_R2"
 
 # Reads compressed/decompressed
-compression_suffix: "fastq"     #".fastq.gz" or "fastq"
+compression_suffix: "fastq"     #".fastq.gz" or ".fastq"
 
 
 

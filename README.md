@@ -73,7 +73,7 @@ Note: Results from different tools such as fastqc, multiQC, seqkit, and dada2 we
 <details>
 <summary><h3 style="font-size: 24px;">1. Prerequisites</h3></summary>
     
-Please install the following tools before running this workflow. Please request an interactive session before starting the installation step by running the following command:
+Please install the following tool before running this workflow. Please request an interactive session before starting the installation step by running the following command:
 
 ```bash
     salloc --mem=20G --time=05:00:00
@@ -96,10 +96,6 @@ For packages installed in R, initiate an R session within the same environment. 
 Next we need to set up a few environments to use in different steps of the pipeline.
 
 #### 2.1. snakemake environment
-
-```bash
-conda create -n snakemake
-```
 
 Follow the tutorial in the following link:
 snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html

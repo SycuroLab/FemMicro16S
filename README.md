@@ -81,8 +81,6 @@ Please install the following tools before running this workflow. Please request 
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
-snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
-
 </details>
 
 
@@ -97,7 +95,27 @@ For packages installed in R, initiate an R session within the same environment. 
 
 Next we need to set up a few environments to use in different steps of the pipeline.
 
-#### 2.1. dada2 environment
+#### 2.1. snakemake environment
+
+```bash
+conda create -n snakemake
+```
+
+Follow the tutorial in the following link:
+snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
+```bash
+conda install -n base -c conda-forge mamba
+
+mamba create -c conda-forge -c bioconda -n snakemake snakemake
+
+mamba activate snakemake
+
+pip install pyyaml
+```
+<br>
+
+#### 2.2. dada2 environment
 
 To install r and dada2:
 
@@ -133,7 +151,7 @@ conda deactivate
 
 <br>
 
-#### 2.2. QC environment
+#### 2.3. QC environment
 
 To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
 
@@ -151,7 +169,7 @@ conda deactivate
 
 <br>
 
-#### 2.3 fastree_mafft environment 
+#### 2.4 fastree_mafft environment 
 
 To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
 
@@ -164,7 +182,7 @@ conda deactivate
 
 <br>
 
-#### 2.4 rmd environment
+#### 2.5 rmd environment
 
 ```bash
 conda create -n rmd
@@ -205,7 +223,7 @@ conda deactivate
 
 <br>
 
-#### 2.5 vsearch environment
+#### 2.6 vsearch environment
 
 ```
 conda create -n vsearch

@@ -13,6 +13,8 @@ rule fastqcRaw:
     shell: "fastqc -o {params.output} -d {resources.tmpdir} {input.R1} {input.R2} "
 
 
+
+
 rule multiqcRaw:
     input:
         R1 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["forward_read_suffix"] +"_fastqc.html",sample=SAMPLES),
@@ -34,8 +36,8 @@ rule cutAdapt:
     input:
         unpack( lambda wc: dict(list_files.loc[wc.sample]))
     output:
-        R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
-        R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
+        R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
+        R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
     params:
         m=config["min_len"],
         o=config["min_overlap"],
@@ -57,12 +59,14 @@ rule cutAdapt:
         fi
         """
 
+
+
 rule cutAdaptQc:
     input:
         rules.cutAdapt.output if config.get("primer_removal", True) else (unpack(lambda wc: dict(list_files.loc[wc.sample])),)
     output:
-        R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
-        R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
+        R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
+        R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
     params:
         qf=config["qf"],
         qr=config["qr"],

@@ -1,7 +1,7 @@
 # Packages
 suppressMessages(library(dplyr))
 suppressMessages(library(tibble))
-
+suppressMessages(library(stringr))
 
 
 
@@ -35,10 +35,6 @@ output_table <- output_table_GTDB %>% left_join(output_table_URE, by = "asv_seq"
 mutate(Database ="GTDB", .after = asv_len)
 }
 
-
-
-
-
 # Split the 'Taxa' column of the previous data frame into separate columns based on the ';' separator, up to a maximum of 7 columns
 taxa_level <- as.data.frame(stringr::str_split_fixed(output_table$taxonomy, ";", n = 7))
 
@@ -63,7 +59,7 @@ output_table[output_table == ""] <- NA
 # Filter the output_table data frame to include only rows where 'Species_level' is TRUE
 species_filt <- output_table %>% filter(Species_level == TRUE) %>%
     # Split the 'Species' column into two separate columns based on the '_' separator
-    mutate(as.data.frame(stringr::str_split_fixed(Species, "_", n = 2))) %>%
+    mutate(as.data.frame(stringr::str_split_fixed(Species, "_| ", n = 2))) %>%
     # Add a new 'Species_unique' column by extracting the unique species name from the second column
     mutate(Species_unique = gsub("\\(.*", "", V2)) %>%
     # Add a new 'Accession_number' column by extracting the accession number from the second column
@@ -83,7 +79,6 @@ species_filt <- output_table %>% filter(Species_level == TRUE) %>%
     rename(Species_raw = Species) %>%
     # Move the 'Num_hits' column to appear after 'identity'
     relocate(Num_hits, .after = identity)
-
 
 
 # Remove the 'taxonomy' and 'Species' columns from the output_table data frame
@@ -111,6 +106,22 @@ unique_asvs <- output_table2 %>%
 
 # Replace NA values in Num_hits column with 1 when it has a hit at another level
 unique_asvs$Num_hits[!is.na(unique_asvs$Database) & is.na(unique_asvs$Num_hits)] <- 1
+
+
+#Taking care of the fact that URE acession numbers exist in different taxonomy columns 
+
+if (snakemake@config[['URE_after_GTDB']] == TRUE){
+for(i in 1:nrow(unique_asvs)){
+  if(is.na(unique_asvs$Num_hits[i])==FALSE & unique_asvs$Species_level[i]==FALSE & unique_asvs$Database[i]=="URE"){
+    for(j in seq(from=ncol(unique_asvs), to=1, by=-1)){
+      if(!is.na(unique_asvs[i,j])==T & is.na(unique_asvs[i,"Accession_number"])==T){
+        unique_asvs[i,"Accession_number"]<-str_extract(unique_asvs[i,j],"(?<=\\().*?(?=\\))")
+        unique_asvs[i,j]<-gsub("\\(.*?\\)", "", unique_asvs[i,j])
+       }
+      }
+    }
+  }
+}
 
 
 # Group the 'repeated_asvs' data frame by 'asv_num', summarize the number of hits and mean 'Species_level'
@@ -150,7 +161,6 @@ repeated_asvs_colapsed <- repeated_asvs %>%
 
 repeated_asvs_colapsed$Num_hits <- 1
 
-
 # Combine the 'unique_asvs', 'repeated_asvs_onetrue', and 'repeated_asvs_colapsed' data frames into a single data frame called 'final_result_unique_id'
 # if the repeated_asvs_onetrue dataframe is all NA we don't need to join it
 
@@ -172,16 +182,18 @@ write.table(final_result_unique_id,snakemake@output[["parsed_collapsed_GTDB_URE"
 
 ############ merging vsearch and dada2 results #############
 
+# conditional to check the use of URE database
 # load dada2 final combined output table from output/taxomomy
-
-
-dd2 <- read.table(file= snakemake@input[["annotation"]], sep = ',', header = T)
-
-
+if (snakemake@config[['URE_after_GTDB']]==TRUE) {
+  dd2 <- read.table(file = snakemake@input[["annotation"]], sep = ',', header = T) %>%
+    select(-contains("_rdp"),-contains("_silva") ) 
+} else{
+  dd2 <- read.table(file = snakemake@input[["annotation"]], sep = ',', header = T) %>%
+    select(-contains("_rdp"),-contains("_silva"),-contains("_URE") ) 
+}
+  
 # load vsearch final colapsed table from output/vsearch/ and select only desired columns
-vsearch<-final_result_unique_id %>% select(c(1:3,5,6,8:13,15,16)) %>% rename(Species=Species_unique)
-
-
+vsearch<-final_result_unique_id %>% rename(Species=Species_unique) %>% select(c("asv_num","asv_seq","asv_len", "Database", "identity", "Kingdom", "Phylum", "Class",  "Order", "Family", "Genus", "Species", "Accession_number"))
 # adjust vsearch column names and add a suffix
 colnames(vsearch)<-tolower(colnames(vsearch))
 colnames(vsearch)[4:13] <- paste0(colnames(vsearch)[4:13], "_vsearch")
@@ -196,12 +208,14 @@ colapsed <- df[1:3]
 colapsed[c("kingdom_final","phylum_final","class_final","order_final","family_final","genus_final","species_final")]<-df[6:12]
 
 colapsed$database_final<-df$database_vsearch
-colapsed$package<-"Vsearch"
+colapsed$package<-"VSEARCH"
 
 # only dada2 gtdb assignments
-gtdb_dd2 <- df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","species_gtdb")]
+gtdb_dd2 <- 
+df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","species_gtdb")]
 
-# only dada2 URE assignments , if TRUE in the pipelie
+
+# dada2 URE assignments , if TRUE in the pipelie
 if(snakemake@config[['URE_after_GTDB']]==TRUE){
   ure_dd2 <- df[c("kingdom_URE","phylum_URE","class_URE","order_URE","family_URE","genus_URE","species_URE")]
 }

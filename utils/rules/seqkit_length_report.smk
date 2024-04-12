@@ -16,8 +16,8 @@ rule seqkit_counts_raw:
         temp=config["output_dir"]+"/random_samples/"+"temp_raw.txt"
     params:
         input_dir=config["input_dir"] + "/",
-        input_suff_r1=config["forward_read_suffix"]+".fastq.gz",
-        input_suff_r2=config["reverse_read_suffix"]+".fastq.gz",
+        input_suff_r1=config["forward_read_suffix"]+config["compression_suffix"],
+        input_suff_r2=config["reverse_read_suffix"]+config["compression_suffix"],
         output_dir=config["output_dir"]+"/random_samples",
         output_suff1=config["forward_read_suffix"]+"_raw",
         output_suff2=config["reverse_read_suffix"]+"_raw"
@@ -41,18 +41,19 @@ rule seqkit_counts_raw:
         """
 
 
+
 use rule seqkit_counts_raw as seqkit_counts_cutadapt with:
     input:
         file=rules.random_sample.output,
-        R1=expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
-        R2=expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
+        R1=expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        R2=expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES)
     output:
         temp=config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt"
     params:
         output_dir=config["output_dir"]+"/random_samples/",
         input_dir=config["output_dir"]+"/cutadapt_qc/",
-        input_suff_r1=config["forward_read_suffix"]+".fastq.gz",
-        input_suff_r2=config["reverse_read_suffix"]+".fastq.gz",
+        input_suff_r1=config["forward_read_suffix"]+config["compression_suffix"],
+        input_suff_r2=config["reverse_read_suffix"]+config["compression_suffix"],
         output_suff1=config["forward_read_suffix"]+"_cutadapt",
         output_suff2=config["reverse_read_suffix"]+"_cutadapt"
 
@@ -61,17 +62,18 @@ use rule seqkit_counts_raw as seqkit_counts_cutadapt with:
 use rule seqkit_counts_raw as seqkit_counts_dada2 with:
     input:
         file=rules.random_sample.output,
-        R1=expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
-        R2=expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
+        R1=expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        R2=expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES)
     output:
         temp=config["output_dir"]+"/random_samples/"+"temp_dada2.txt"
     params:
         input_dir=config["output_dir"]+"/dada2/dada2_filter/",
-        input_suff_r1=config["forward_read_suffix"]+".fastq.gz",
-        input_suff_r2=config["reverse_read_suffix"]+".fastq.gz",
+        input_suff_r1=config["forward_read_suffix"]+config["compression_suffix"],
+        input_suff_r2=config["reverse_read_suffix"]+config["compression_suffix"],
         output_dir=config["output_dir"]+"/random_samples",
         output_suff1=config["forward_read_suffix"]+"_dada2",
         output_suff2=config["reverse_read_suffix"]+"_dada2"
+
 
 
 rule reads_Length_Distribution:
@@ -81,11 +83,13 @@ rule reads_Length_Distribution:
         temp=config["output_dir"]+"/figures/length_distribution/"+"temp_read_length.txt"
     params:
         files=config["output_dir"]+"/random_samples",
-        outdir=config["output_dir"]+"/figures/length_distribution/"
+        outdir=config["output_dir"]+"/figures/length_distribution/",
+        fwd_suffix=config['forward_read_suffix'],
+        rev_suffix=config['reverse_read_suffix']
     conda:
         "dada2"
     shell:
         """
-        Rscript utils/scripts/dada2/seqkit_length_report.R {params.files} {params.outdir}
+        Rscript utils/scripts/dada2/seqkit_length_report.R {params.files} {params.outdir} {params.fwd_suffix} {params.rev_suffix}
         touch {output.temp}
         """

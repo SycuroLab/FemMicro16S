@@ -15,7 +15,7 @@ rule vsearchGTDB:
         id=config["Identity"],
         maxaccepts=config["Maxaccepts"]
     shell: 
-        "time vsearch --usearch_global {input.fas} --db {params.db} --userout {output.output1} --userfields query+target+id --uc {output.output2} --id {params.id} --iddef 0 --log {log} --threads {threads} --uc_allhits --maxaccepts {params.maxaccepts} --top_hits_only --strand both --gapopen '*' "
+        "time vsearch --usearch_global {input.fas} --db {params.db} --notrunclabels --userout {output.output1} --userfields query+target+id --uc {output.output2} --id {params.id} --iddef 0 --log {log} --threads {threads} --uc_allhits --maxaccepts {params.maxaccepts} --top_hits_only --strand both --gapopen '*' "
 
 
 
@@ -52,7 +52,7 @@ rule vsearchURE:
     shell:
         """
         if [[ "{config[URE_after_GTDB]}" == True ]]; then
-            time vsearch --usearch_global {input.fas} --db {params.db} --userout {output.output1} \
+            time vsearch --usearch_global {input.fas} --db {params.db}   --notrunclabels --userout {output.output1} \
             --userfields query+target+id --uc {output.output2} --id {params.id} --iddef 0 --log {log} \
             --threads {threads} --uc_allhits --maxaccepts {params.maxaccepts} --top_hits_only --strand both --gapopen '*'
         else
@@ -78,4 +78,3 @@ rule vsearchParse:
         "dada2"   
     script:
         "../scripts/vsearch/vsearch_parsing.R"
-

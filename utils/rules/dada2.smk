@@ -170,8 +170,8 @@ rule RDPtaxa:
         ref= lambda wc: config['RDP_dbs'][wc.ref],
         species= lambda wc: config['RDP_species'][wc.ref]
     output:
-        taxonomy= config["output_dir"]+"/taxonomy/{ref}_RDP.tsv",
-        rds_bootstrap=config["output_dir"]+"/taxonomy/{ref}_RDP_boostrap.rds"
+        taxonomy= config["output_dir"]+"/taxonomy/dada2_tables/{ref}_RDP.tsv",
+        rds_bootstrap=config["output_dir"]+"/taxonomy/dada2_tables/{ref}_RDP_boostrap.rds"
     threads:
         config['threads']
     conda:

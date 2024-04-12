@@ -33,7 +33,7 @@ rule all:
 	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
         config["output_dir"]+"/figures/length_distribution/"+"temp_read_length.txt",
         config["output_dir"]+"/QC_html_report/"+"qc_report.html",
-        config["output_dir"]+"/taxonomy/"+"annotation_combined_dada2.txt",
+        config["output_dir"]+"/taxonomy/"+"dada2_all_databases_merged.tsv",
         "samples/random_samples.tsv",
         config["output_dir"]+"/vsearch/Final_uncollapsed_output.tsv",
         config["output_dir"]+"/vsearch/Final_colapsed_output.tsv",

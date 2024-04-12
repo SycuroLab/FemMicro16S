@@ -5,7 +5,8 @@ rule rawReadCount:
         config["output_dir"]+"/dada2/rawReadCount.txt"
     conda: "QC"
     shell:
-        "seqkit stats -a {input}/*.gz > {output}"
+        "seqkit stats -a {input}/*fastq* > {output}"
+
 
 
 rule numSeqParse:

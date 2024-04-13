@@ -5,15 +5,15 @@ taxa_GTDB<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/GTDB_RD
 taxa_GTDB<-cbind(taxa_GTDB,rownames(taxa_GTDB))
 colnames(taxa_GTDB)[8]<-"asv_seq"
 
-taxa_RDP<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/RDP_RDP.tsv"))
+taxa_RDP<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/dada2_tables/RDP_RDP.tsv"))
 taxa_RDP<-cbind(taxa_RDP,rownames(taxa_RDP))
 colnames(taxa_RDP)[8]<-"asv_seq"
 
-taxa_Silva<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/Silva_RDP.tsv"))
+taxa_Silva<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/dada2_tables/Silva_RDP.tsv"))
 taxa_Silva<-cbind(taxa_Silva,rownames(taxa_Silva))
 colnames(taxa_Silva)[8]<-"asv_seq"
 
-taxa_URE<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/URE_RDP.tsv"))
+taxa_URE<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/dada2_tables/URE_RDP.tsv"))
 taxa_URE<-cbind(taxa_URE,rownames(taxa_URE))
 colnames(taxa_URE)[8]<-"asv_seq"
 

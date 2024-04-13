@@ -104,6 +104,10 @@ maxEE:
 #Truncate reads at the first instance of a quality score less than or equal to truncQ.
 truncQ: 2
 
+#Subsampling reads for learning error rates
+subsample: False  #True or False
+subsample2LearnErrorRate: 0.25
+
 
 #Default 1e8. The minimum number of total bases to use for error rate learning.
 learn_nbases: 100000000

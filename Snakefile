@@ -37,8 +37,8 @@ rule all:
         "samples/random_samples.tsv",
         config["output_dir"]+"/vsearch/Final_uncollapsed_output.tsv",
         config["output_dir"]+"/vsearch/Final_colapsed_output.tsv",
-        config["output_dir"]+"/taxonomy/Vsearch_output.tsv",
-        config["output_dir"]+"/taxonomy/vsearch_dada2_merged.tsv"
+        config["output_dir"]+"/taxonomy/vsearch_tables/Vsearch_output.tsv",
+        config["output_dir"]+"/taxonomy/final_merged_tables/vsearch_dada2_merged.tsv"
 
 ##path to where different snakemake rule files are saved
 

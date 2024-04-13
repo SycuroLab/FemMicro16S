@@ -70,8 +70,8 @@ rule vsearchParse:
     output:
         SemiParsed_uncollapsed=config["output_dir"]+"/vsearch/Final_uncollapsed_output.tsv",
         parsed_collapsed_GTDB_URE=config["output_dir"]+"/vsearch/Final_colapsed_output.tsv",
-        Vsearch_final=config["output_dir"]+"/taxonomy/Vsearch_output.tsv",
-        merged_final=config["output_dir"]+"/taxonomy/vsearch_dada2_merged.tsv"
+        Vsearch_final=config["output_dir"]+"/taxonomy/vsearch_tables/Vsearch_output.tsv",
+        merged_final=config["output_dir"]+"/taxonomy/final_merged_tables/vsearch_dada2_merged.tsv"
     threads:
         config['threads']
     conda:

@@ -1,7 +1,7 @@
 suppressMessages(library("dplyr"))
 
 ## Importing data
-taxa_GTDB<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/GTDB_RDP.tsv"),header=TRUE, row.names = 1, sep = "\t")
+taxa_GTDB<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/dada2_tables/GTDB_RDP.tsv"),header=TRUE, row.names = 1, sep = "\t")
 taxa_GTDB<-cbind(taxa_GTDB,rownames(taxa_GTDB))
 colnames(taxa_GTDB)[8]<-"asv_seq"
 

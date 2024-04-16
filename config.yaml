@@ -105,6 +105,7 @@ maxEE:
 truncQ: 2
 
 #Subsampling reads for learning error rates
+##check the logs/learnErrorRates..out file to check the quantity of bases, reads, and samples utilized for learning error rates.
 subsample: False  #True or False
 subsample2LearnErrorRate: 0.25
 

@@ -59,7 +59,7 @@ output_table[output_table == ""] <- NA
 # Filter the output_table data frame to include only rows where 'Species_level' is TRUE
 species_filt <- output_table %>% filter(Species_level == TRUE) %>%
     # Split the 'Species' column into two separate columns based on the '_' separator
-    mutate(as.data.frame(stringr::str_split_fixed(Species, "_| ", n = 2))) %>%
+    mutate(as.data.frame(stringr::str_split_fixed(Species, "_", n = 2))) %>%
     # Add a new 'Species_unique' column by extracting the unique species name from the second column
     mutate(Species_unique = gsub("\\(.*", "", V2)) %>%
     # Add a new 'Accession_number' column by extracting the accession number from the second column

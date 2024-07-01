@@ -97,15 +97,16 @@ Next we need to set up a few environments to use in different steps of the pipel
 
 #### 2.1. snakemake environment
 
-Follow the tutorial in the following link:
-snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
-
 ```bash
-conda install -n base -c conda-forge mamba
+conda activate base
 
-mamba create -c conda-forge -c bioconda -n snakemake snakemake
+conda install -c conda-forge mamba
+
+mamba create --name snakemake
 
 mamba activate snakemake
+
+mamba install -c conda-forge -c bioconda snakemake==7.32.0
 
 pip install pyyaml
 ```

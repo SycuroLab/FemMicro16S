@@ -43,7 +43,7 @@ rule cutAdapt:
         o=config["min_overlap"],
         e=config["max_e"]
     threads:
-        config['threads']
+        config["threads"]
     conda:
         "QC"
     shell:

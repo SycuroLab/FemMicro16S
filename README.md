@@ -189,6 +189,7 @@ conda install -c conda-forge pandoc
 conda install -c conda-forge r-tidyverse
 conda install bioconda::bioconductor-dada2
 conda install conda-forge::r-kableextra
+conda install conda-forge::r-ggpubr
 wget https://github.com/marbl/Krona/releases/download/v2.8.1/KronaTools-2.8.1.tar 
 tar xf KronaTools-2.8.1.tar 
 cd KronaTools-2.8.1
@@ -209,7 +210,6 @@ install.packages("remotes")
 remotes::install_github("cpauvert/psadd")
 BiocManager::install("limma")
 install.packages("RColorBrewer")
-install.packages("ggpubr")
 install.packages("waterfalls")
 ```
 

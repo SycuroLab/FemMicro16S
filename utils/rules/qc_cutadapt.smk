@@ -34,7 +34,7 @@ rule multiqcRaw:
 
 rule cutAdapt:
     input:
-        unpack( lambda wc: dict(list_files.loc[wc.sample]))
+        unpack(lambda wc: dict(list_files.loc[wc.sample]))
     output:
         R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
         R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]

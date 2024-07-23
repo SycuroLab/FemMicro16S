@@ -187,6 +187,7 @@ conda activate rmd
 conda install -c conda-forge r-base
 conda install -c conda-forge pandoc
 conda install -c conda-forge r-tidyverse
+conda install bioconda::bioconductor-dada2
 wget https://github.com/marbl/Krona/releases/download/v2.8.1/KronaTools-2.8.1.tar 
 tar xf KronaTools-2.8.1.tar 
 cd KronaTools-2.8.1
@@ -205,7 +206,6 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("phyloseq") #This takes a while
 install.packages("remotes")
 remotes::install_github("cpauvert/psadd")
-BiocManager::install("dada2")
 BiocManager::install("limma")
 BiocManager::install("kableExtra")
 install.packages("RColorBrewer")

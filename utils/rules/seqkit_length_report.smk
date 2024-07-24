@@ -3,7 +3,7 @@ rule random_sample:
         config["list_files"]
     output:
         "samples/random_samples.tsv"
-    conda: "QC"
+    conda: "snakemake"
     script:
         "../scripts/common/random_sample.py"
 

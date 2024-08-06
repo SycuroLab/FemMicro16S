@@ -490,7 +490,7 @@ if (length(samples) > 0 && !all(samples == "")) {
         
         cat("<br><br>")
         
-        B <- kable(temp, format = "html", caption = "Abundance table of taxa found in the positive control sample") %>%
+        B <- kable(temp, format = "html", caption = "Relative abundance table of taxa found in the positive control sample") %>%
           kable_styling() %>%
           column_spec(1:ncol(temp), width = "6cm")
         print(B)

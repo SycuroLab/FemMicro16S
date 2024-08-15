@@ -296,6 +296,9 @@ python utils/scripts/common/prepare.py <DIR>
 #### 3.6 Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
  <br>
 
+⚠️ **Note: Please make sure to change parameters in dada2_sbatch.sh and cluster.json files based on your SLURM HPC cluster resources before running the pipeline.**
+
+
  ```bash
  snakemake -np
  ```

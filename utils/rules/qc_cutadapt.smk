@@ -34,7 +34,8 @@ rule multiqcRaw:
 
 rule cutAdapt:
     input:
-        unpack(lambda wc: dict(list_files.loc[wc.sample]))
+        R1=rules.filterNsRaw.output.R1,
+        R2=rules.filterNsRaw.output.R2
     output:
         R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
         R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
@@ -58,6 +59,26 @@ rule cutAdapt:
             echo "Rule 'cutAdapt' is not executed because 'primer_removal' is set to 'false' in the config file."
         fi
         """
+
+
+
+
+rule primerRMVinvestigation:
+    input:
+        R1= expand(config["output_dir"]+"/primer_status/filtN/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/primer_status/filtN/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        cut1= expand(config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        cut2= expand(config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES)
+    params:
+        dir=config["output_dir"]+"/primer_status/"
+    output:
+        primer_status_bf=config["output_dir"]+"/primer_status/primer_existance_raw.csv",
+        primer_status_af=config["output_dir"]+"/primer_status/primer_existance_trimmed.csv"
+    conda:
+        "dada2"
+    script:
+        "../scripts/dada2/primer_investigation.R"
+
 
 
 

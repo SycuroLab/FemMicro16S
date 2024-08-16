@@ -3,7 +3,7 @@ rule combining_annotations:
         expand(config["output_dir"] + "/taxonomy/dada2_tables/{ref}_RDP.tsv", ref=config['RDP_dbs'].keys()),
         seqs=rules.removeChimeras.output.rds
     output:
-        table=config["output_dir"]+"/taxonomy/dada2_tables/"+"dada2_all_databases_merged.tsv"
+        table=config["output_dir"]+"/taxonomy/dada2_tables/"+"dada2_all_databases_merged.csv"
     conda:
         "dada2"
     script:

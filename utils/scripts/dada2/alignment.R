@@ -1,5 +1,5 @@
-library(dada2)
-library(DECIPHER)
+suppressMessages(library(dada2))
+suppressMessages(library(DECIPHER))
 
 seqtab = readRDS(snakemake@input[['seqtab']])
 

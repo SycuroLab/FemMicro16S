@@ -44,7 +44,7 @@ for (file_path in filtRs) {
 }
 
 
-p_F<- plotQualityProfile(valid_Fs,n=1e5,aggregate=T) + 
+p_F<- plotQualityProfile(valid_filtFs,n=1e5,aggregate=T) + 
   theme_classic(base_size = 10) +  # Increase base size for classic theme
   theme(
     axis.title = element_text(size = 14),  # Increase size of axis titles
@@ -61,7 +61,7 @@ print("Out of plotQualityProfile R1")
 ggsave(snakemake@output$R1,p_F)
 
 
-p_R<- plotQualityProfile(valid_Rs,n=1e5,aggregate=T)+ 
+p_R<- plotQualityProfile(valid_filtRs,n=1e5,aggregate=T)+ 
   theme_classic(base_size = 10) +  # Increase base size for classic theme
   theme(
     axis.title = element_text(size = 14),  # Increase size of axis titles

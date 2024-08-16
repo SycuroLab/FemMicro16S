@@ -10,6 +10,14 @@ SAMPLES = list(list_files.index)
 
 
 
+
+myoutput = list()
+
+if config['primer_removal'] == True:
+    myoutput.append(config["output_dir"]+"/seqkit_samples/"+"temp_primerRMV.txt")
+
+
+
 rule all:
     input:
         config["output_dir"]+"/figures/length_distribution/Sequence_Length_distribution.png",
@@ -20,7 +28,6 @@ rule all:
         config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots"+ config["forward_read_suffix"]+".png",
         config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots"+ config["reverse_read_suffix"]+".png",
         expand(config["output_dir"]+"/taxonomy/dada2_tables/{ref}_RDP.tsv",ref= config['RDP_dbs'].keys()),
-        config["output_dir"]+"/phylogeny/ASV_seq.fasta",
         config["output_dir"]+"/phylogeny/ASV_aligned.fasta",
         config["output_dir"]+"/phylogeny/ASV_tree.nwk",
         config["output_dir"]+"/dada2/Nreads.tsv",
@@ -31,17 +38,24 @@ rule all:
         config["output_dir"]+"/random_samples/"+"temp_raw.txt",
         config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
         config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
-        config["output_dir"]+"/figures/length_distribution/"+"temp_read_length.txt",
+        config["output_dir"]+"/figures/length_distribution/"+"reads_length_distribution_all_samples.html",
         config["output_dir"]+"/QC_html_report/"+"qc_report.html",
-        config["output_dir"]+"/taxonomy/dada2_tables/"+"dada2_all_databases_merged.tsv",
-        "samples/random_samples.tsv",
+        config["output_dir"]+"/taxonomy/dada2_tables/"+"dada2_all_databases_merged.csv",
         config["output_dir"]+"/vsearch/Final_uncollapsed_output.tsv",
         config["output_dir"]+"/vsearch/Final_colapsed_output.tsv",
         config["output_dir"]+"/taxonomy/vsearch_tables/Vsearch_output.tsv",
-        config["output_dir"]+"/taxonomy/final_merged_tables/vsearch_dada2_merged.tsv"
+        config["output_dir"]+"/taxonomy/final_merged_tables/vsearch_dada2_merged.tsv",
+        config["output_dir"]+"/fasta_files/ASVs_id.fasta",
+        config["output_dir"]+"/fasta_files/ASVs_tax.fasta",
+        config["output_dir"]+"/fasta_files/ASVs_seqs.fasta",
+        config["output_dir"]+"/primer_status/primer_existance_raw.csv",
+        config["output_dir"]+"/primer_status/primer_existance_trimmed.csv", 
+        myoutput
+
 
 ##path to where different snakemake rule files are saved
 
+include: "utils/rules/filtNs.smk"
 include: "utils/rules/qc_cutadapt.smk"
 include: "utils/rules/dada2.smk"
 include: "utils/rules/phylo_tree.smk"

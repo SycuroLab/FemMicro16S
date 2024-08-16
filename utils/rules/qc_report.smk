@@ -7,7 +7,8 @@ rule qc_report:
         rules.plotQualityProfileAfterQC.output,
         rules.separate_vsearch_hits.output,
         rules.vsearchParse.output,
-        rules.combining_annotations.output
+        rules.combining_annotations.output,
+        rules.reads_Length_Distribution.output
     conda:
         "rmd"
     params:

@@ -2,7 +2,7 @@ rule multipleAlign:
     input:
         seqtab =rules.removeChimeras.output.rds
     output:
-        seqfasta=config["output_dir"]+"/fasta_files/ASV_seq.fasta",
+        seqfasta=config["output_dir"]+"/fasta_files/ASVs_seqs.fasta",
         alignment=config["output_dir"]+"/phylogeny/ASV_aligned.fasta"
     threads:
         config['threads']

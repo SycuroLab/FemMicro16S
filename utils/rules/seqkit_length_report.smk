@@ -103,7 +103,7 @@ rule reads_Length_Distribution:
     input:
         needed=rules.seqkit_counts_dada2.output
     output:
-        temp=config["output_dir"]+"/figures/length_distribution/"+"reads_length_distribution_all_samples.html"
+        outfile=config["output_dir"]+"/figures/length_distribution/"+"reads_length_distribution_all_samples.html"
     params:
         files=config["output_dir"]+"/seqkit_samples",
         outdir=config["output_dir"]+"/figures/length_distribution/",

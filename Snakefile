@@ -38,7 +38,6 @@ rule all:
         config["output_dir"]+"/seqkit_samples/"+"temp_raw.txt",
         config["output_dir"]+"/seqkit_samples/"+"temp_dada2.txt",
         config["output_dir"]+"/seqkit_samples/"+"temp_cutadapt.txt",
-        config["output_dir"]+"/figures/length_distribution/"+"reads_length_distribution_all_samples.html",
         config["output_dir"]+"/QC_html_report/"+"qc_report.html",
         config["output_dir"]+"/taxonomy/dada2_tables/"+"dada2_all_databases_merged.csv",
         config["output_dir"]+"/vsearch/Final_uncollapsed_output.tsv",

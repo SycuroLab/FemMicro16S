@@ -97,22 +97,3 @@ use rule seqkit_counts_raw as seqkit_counts_dada2 with:
         output_suff1=config["forward_read_suffix"]+"_dada2",
         output_suff2=config["reverse_read_suffix"]+"_dada2"
 
-
-
-rule reads_Length_Distribution:
-    input:
-        needed=rules.seqkit_counts_dada2.output
-    output:
-        outfile=config["output_dir"]+"/figures/length_distribution/"+"reads_length_distribution_all_samples.html"
-    params:
-        files=config["output_dir"]+"/seqkit_samples",
-        outdir=config["output_dir"]+"/figures/length_distribution/",
-        fwd_suffix=config['forward_read_suffix'],
-        rev_suffix=config['reverse_read_suffix'],
-        primer_removal=config['primer_removal']
-    conda:
-        "rmd"
-    shell:
-        """
-                Rscript utils/scripts/dada2/seqkit_length_report.R {params.files} {output.outfile} {params.fwd_suffix} {params.rev_suffix} {params.primer_removal}
-        """

@@ -40,3 +40,7 @@ df_selected <- df %>%
 
 # Write the data to a FASTA file with asv ids
 write_fasta(df_selected %>% select("asv_num","asv_seq"), snakemake@output[['id_fas']])
+
+
+# Write the data to a FASTA file with asv ids and taxonomy
+write_fasta(df_selected %>% select("taxonomy","asv_seq"), snakemake@output[['id_tax']])

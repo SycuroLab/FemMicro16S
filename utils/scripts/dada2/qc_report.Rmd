@@ -57,7 +57,7 @@ score at each base position is shown. The mean quality score at each position is
 position (this is more useful for other sequencing technologies, as Illumina reads are typically all the same length, hence a flat
  red line will be expected).
 
->br>
+<br>
 
 ### Read quality raw 
 

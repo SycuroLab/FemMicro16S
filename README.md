@@ -211,6 +211,7 @@ remotes::install_github("cpauvert/psadd")
 BiocManager::install("limma")
 install.packages("RColorBrewer")
 install.packages("waterfalls")
+install.packages("plotly")
 ```
 
 to quit R type q(), (rmd) [username@hostname ~]$ q() and deactivate the environment:

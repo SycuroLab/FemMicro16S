@@ -4,8 +4,10 @@ rule rawReadCount:
     output:
         config["output_dir"]+"/dada2/rawReadCount.txt"
     conda: "QC"
+    params:
+        format=config["compression_suffix"]
     shell:
-        "seqkit stats -a {input}/*fastq* > {output}"
+        "seqkit stats -a {input}/*{params} > {output}"
 
 
 

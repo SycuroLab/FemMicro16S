@@ -14,7 +14,9 @@ SAMPLES = list(list_files.index)
 myoutput = list()
 
 if config['primer_removal'] == True:
-    myoutput.append(config["output_dir"]+"/seqkit_samples/"+"temp_primerRMV.txt")
+    myoutput.append(config["output_dir"] + "/seqkit_samples/" + "temp_primerRMV.txt")
+    myoutput.append(config["output_dir"] + "/primer_status/primer_existance_raw.csv")
+    myoutput.append(config["output_dir"] + "/primer_status/primer_existance_trimmed.csv")
 
 
 
@@ -47,8 +49,6 @@ rule all:
         config["output_dir"]+"/fasta_files/ASVs_id.fasta",
         config["output_dir"]+"/fasta_files/ASVs_tax.fasta",
         config["output_dir"]+"/fasta_files/ASVs_seqs.fasta",
-        config["output_dir"]+"/primer_status/primer_existance_raw.csv",
-        config["output_dir"]+"/primer_status/primer_existance_trimmed.csv", 
         myoutput
 
 

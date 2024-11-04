@@ -241,6 +241,15 @@ for(i in 1:nrow(df)){
 
 final <- colapsed %>% left_join(.,df,by=c("asv_num","asv_seq","asv_len"))
 
+#In the taxonomy_final columns if package is vsearch and spp column is NA get the annotation from dada2 and change the package to dada2
+for(i in 1:nrow(final)){
+  if (final$package[i]=="VSEARCH" & is.na(final$species_final[i])){
+    final[i,4:10]<- gtdb_dd2[i,]
+    final[i,"package"]<-"DADA2"
+  }
+}
+
+
 write.table(final, file = snakemake@output[["merged_final"]], row.names = F, sep = "\t")
 
 

@@ -281,6 +281,8 @@ python utils/scripts/common/prepare.py <DIR>
 | truncLen | trimming reads at this length | numeric e.g. 260 |
 | maxEE | maximum number of “expected errors” allowed in a read | numeric e.g. 2 |
 | truncQ | Truncating reads at the first instance of a quality score less than or equal to truncQ | 2 |
+| subsample | Subsampling reads for learning error rates | False |
+| subsample2LearnErrorRate | Percentage of reads from each sample to be used | 0.25 |
 | learn_nbases | minimum number of total bases to use for error rate learning | 100000000 |
 | chimera_method | method used for chimera detection | consensus |
 | Identity | minimum percent identity for a hit to be considered a match | percentage e.g. 0.993 |

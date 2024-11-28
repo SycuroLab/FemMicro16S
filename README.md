@@ -276,7 +276,7 @@ python utils/scripts/common/prepare.py <DIR>
 | max_e | maximum error rate allowed in primer match/detection | 0.1 |
 | qf, qr | quality trimming score | numeric e.g. 20 |
 | min_len | minimum length of reads kept | numeric e.g. 50 |
-| Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1|pos_ctrl_2" |
+| Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1\\|pos_ctrl_2" |
 | threads | number of threads to be used | numeric e.g. 20 |
 | truncLen | trimming reads at this length | numeric e.g. 260 |
 | maxEE | maximum number of “expected errors” allowed in a read | numeric e.g. 2 |

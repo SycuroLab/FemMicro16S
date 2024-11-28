@@ -278,7 +278,6 @@ python utils/scripts/common/prepare.py <DIR>
 | min_len | minimum length of reads kept | numeric e.g. 50 |
 | random_n | number of random samples to look into their reads length distribution | numeric e.g. 5 |
 | Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1|pos_ctrl_2" |
-| pandoc | path to where pandoc is installed | "/home/username/miniconda/envs/rmd/bin" | 
 | threads | number of threads to be used | numeric e.g. 20 |
 | truncLen | trimming reads at this length | numeric e.g. 260 |
 | maxEE | maximum number of “expected errors” allowed in a read | numeric e.g. 2 |

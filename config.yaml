@@ -12,7 +12,7 @@ list_files: "samples/samples.tsv"
 #A path to where the raw fastq files are stored
 input_dir: "/home/data"   #With no slash at the end
 
-#The name of the output directory. This is for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
+#The name of the output directory (not a path). Change this for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
 output_dir: "output"
 
 #path of the main snakemake directory

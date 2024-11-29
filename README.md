@@ -337,7 +337,7 @@ To make sure that the pipeline is run completely, we need to check the log and o
 | ./output/vsearch/ | vsearch/Final_colapsed_output.tsv | Vsearch assignment for unique ASVs per row with different hits at species level collapsed |
 | ./output/taxonomy/ | vsearch_output.tsv | Taxonomy assignmnet reaults using vsearch and GTDB |
 | ./output/taxonomy | vsearch_dada2_merged.tsv | merged vsearch (GTDB/URE) and dada2 annotations (GTDB/RDP?Silva/URE), corresponding abundance across samples, and final annotation with priority of vsearch (GTDB then URE, if GTDB annotation is NA) over dada2 (GTDB then URE) |
-| ./output/primer_status/primer_existance_raw.csv and , primer_existance_trimmed.csv | Files to show primers existance before and after primer removal, if applicable |
+| ./output/primer_status | primer_existance_raw.csv , primer_existance_trimmed.csv | Files to show primers existance before and after primer removal, if applicable |
 
 
 

@@ -129,8 +129,7 @@ ths in base pairs (bp).
 
 <br>
 
-**You can use the range slider at the bottom of plot to zoom in or zoom out, hover over bars to know more about the reads length a
-nd count. Samples listed on the right panel can be excluded and included by clicking on them. Reads with counts less than 200 are 
+**You can use the range slider at the bottom of plot to zoom in or zoom out, hover over bars to know more about the reads length and count. Samples listed on the right panel can be excluded and included by clicking on them. Reads with counts less than 200 are 
 removed for improving the visualization.**
 
 <br>

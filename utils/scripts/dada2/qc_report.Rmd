@@ -122,10 +122,7 @@ for (f in files) {
 
 <br>
 
-Read length distribution is shown in this plot for all reads in all samples after each step. This shows how removing primer (if ap
-plicable), quality trimming, and error rate filtering affects the length 
-of reads during the process. The Y-axis represents the abundance of reads stacked per sample, while the X-axis shows the read leng
-ths in base pairs (bp).
+Read length distribution is shown in this plot for all reads in all samples after each step. This shows how removing primer (if applicable), quality trimming, and error rate filtering affects the length of reads during the process. The Y-axis represents the abundance of reads stacked per sample, while the X-axis shows the read lengths in base pairs (bp).
 
 <br>
 

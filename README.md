@@ -202,11 +202,6 @@ conda install -c conda-forge r-tidyverse
 conda install bioconda::bioconductor-dada2
 conda install conda-forge::r-kableextra
 conda install conda-forge::r-ggpubr
-wget https://github.com/marbl/Krona/releases/download/v2.8.1/KronaTools-2.8.1.tar 
-tar xf KronaTools-2.8.1.tar 
-cd KronaTools-2.8.1
-#prefix destination path is relative to where KronaTools-2.8.1 is downloaded
-./install.pl --prefix=/path/where/rmd/environment/is/ #e.g.: /softwares/miniconda/envs/rmd/
 ```
 
 to open an R session within the rmd environment type R, (rmd) [username@hostname ~]$ R

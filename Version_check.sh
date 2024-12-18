@@ -80,7 +80,7 @@ echo "plotly version from rmd environment:" && Rscript -e "packageVersion('plotl
 #Tools in vsearch env
 conda activate vsearch
 echo "vsearch version from vsearch environment:" && vsearch 2>&1 | head -n 1 | sed -n 's/.*v\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/v\1/p'
- conda deactivate && echo -e "\n"
+conda deactivate && echo -e "\n"
 
 
 echo "Finished at: `date`"

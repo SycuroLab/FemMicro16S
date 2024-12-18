@@ -36,6 +36,7 @@ cp dada2_sbatch.sh $snakemake_file_dir
 cp -rf logs $snakemake_file_dir
 cp -rf utils $snakemake_file_dir
 
+bash Version_check.sh > used_tools_versions.txt
 
-echo "finished with exit code $? at: `date`"
+echo "Finished at: `date`"
 

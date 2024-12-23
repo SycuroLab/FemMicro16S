@@ -136,6 +136,7 @@ To activate the environment and install the required packages (dplyr, gridExtra,
 
 ```bash
 conda activate dada2
+conda install bioconda::seqtk
 ```
 
 to open an R session within the dada2 environment type R, (dada2) [username@hostname ~]$ R

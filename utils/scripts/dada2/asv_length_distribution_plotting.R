@@ -25,8 +25,8 @@ final <- left_join(l_hist, table2, by = "LENGTH")
 # Coefficient to adjust y2 to fit y1's scale
 coef <- max(final$FREQUENCY, na.rm = TRUE) / max(final$ABUNDANCE, na.rm = TRUE)
 
-# Convert LENGTH to factor
-final$LENGTH <- as.factor(final$LENGTH)
+# Convert LENGTH to numeric values
+final$LENGTH<-as.numeric(final$LENGTH)
 
 
 # Create the plot

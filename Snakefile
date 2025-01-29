@@ -13,7 +13,7 @@ SAMPLES = list(list_files.index)
 
 myoutput = list()
 
-if config['primer_removal'] == True:
+if config['primer_removal'] == True and config['primer_investigation'] == True:
     myoutput.append(config["output_dir"] + "/seqkit_samples/" + "temp_primerRMV.txt")
     myoutput.append(config["output_dir"] + "/primer_status/primer_existance_raw.csv")
     myoutput.append(config["output_dir"] + "/primer_status/primer_existance_trimmed.csv")

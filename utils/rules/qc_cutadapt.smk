@@ -76,23 +76,8 @@ rule primerRMVinvestigation:
         primer_status_af=config["output_dir"]+"/primer_status/primer_existance_trimmed.csv"
     conda:
         "dada2"
-    shell:
-        """
-        if config.get("primer_removal", "False") == "True":
-            shell(
-                "Rscript ../scripts/dada2/primer_investigation.R "
-                "--inputR1 {input.R1} "
-                "--inputR2 {input.R2} "
-                "--cut1 {input.cut1} "
-                "--cut2 {input.cut2} "
-                "--output_bf {output.primer_status_bf} "
-                "--output_af {output.primer_status_af}"
-            )
-        else:
-            touch(output.primer_status_bf)
-            touch(output.primer_status_af)
-            log.info("Rule 'primerRMVinvestigation' is not executed because 'primer_removal' is set to 'false' in the config file.")
-        """
+    script:
+        "../scripts/dada2/primer_investigation.R"
 
 
 

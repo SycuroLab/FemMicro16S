@@ -100,6 +100,8 @@ truncQ: 2
 subsample: True  #True or False
 subsample2LearnErrorRate: 0.1
 
+#Number of records to sample from the fastq file for plotQualityprofiling. DADA2's default is 500,000.
+nRecords: 100000
 
 #Default 1e8. The minimum number of total bases to use for error rate learning.
 learn_nbases: 100000000

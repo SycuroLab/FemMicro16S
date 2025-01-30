@@ -1,6 +1,6 @@
 rule vsearchGTDB:
     input:
-        fas=rules.multipleAlign.output.seqfasta
+        fas=rules.fasta_file.output.seqfasta
     output:
         output1= config["output_dir"]+"/vsearch/GTDB/Vsearch_GTDB_selected.tsv",
         output2= config["output_dir"]+"/vsearch/GTDB/Vsearch_GTDB_raw.tsv"

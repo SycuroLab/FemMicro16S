@@ -6,6 +6,8 @@ suppressMessages(library(ShortRead))
 filtFs = snakemake@input[['R1']]
 filtRs = snakemake@input[['R2']]
 
+#The number of records to sample from the fastq file.
+nRecords= snakemake@config[['nRecords']]
 
 exists <- file.exists(filtFs) & file.exists(filtRs)
 filtFs <- filtFs[exists]
@@ -44,7 +46,7 @@ for (file_path in filtRs) {
 }
 
 
-p_F<- plotQualityProfile(valid_filtFs,n=1e5,aggregate=T) + 
+p_F<- plotQualityProfile(valid_filtFs,n=nRecords,aggregate=T) + 
   theme_classic(base_size = 10) +  # Increase base size for classic theme
   theme(
     axis.title = element_text(size = 14),  # Increase size of axis titles
@@ -61,7 +63,7 @@ print("Out of plotQualityProfile R1")
 ggsave(snakemake@output$R1,p_F)
 
 
-p_R<- plotQualityProfile(valid_filtRs,n=1e5,aggregate=T)+ 
+p_R<- plotQualityProfile(valid_filtRs,n=nRecords,aggregate=T)+ 
   theme_classic(base_size = 10) +  # Increase base size for classic theme
   theme(
     axis.title = element_text(size = 14),  # Increase size of axis titles

@@ -57,7 +57,7 @@ rule all:
 include: "utils/rules/filtNs.smk"
 include: "utils/rules/qc_cutadapt.smk"
 include: "utils/rules/dada2.smk"
-include: "utils/rules/phylo_tree.smk"
+include: "utils/rules/fasta_generation.smk"
 include: "utils/rules/readCount.smk"
 include: "utils/rules/seqkit_length_report.smk"
 include: "utils/rules/annotation_output_dada2.smk"

@@ -65,8 +65,8 @@ rule cutAdapt:
 
 rule primerRMVinvestigation:
     input:
-        R1= expand(config["output_dir"]+"/primer_status/filtN/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/primer_status/filtN/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        R1= expand(config["output_dir"]+"/filtN/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/filtN/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
         cut1= expand(config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
         cut2= expand(config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES)
     params:

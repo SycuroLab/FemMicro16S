@@ -535,7 +535,7 @@ ber of samples falling within specific read count ranges.
 
 <br>
 
-```{r boxplot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,fig.width=11,fig.height=7}
+```{r barplot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,fig.width=11,fig.height=7}
 
 reads2<-data.frame(rep("Starting number of reads",times=nrow(reads1)),reads1$Raw)
 colnames(reads2)<-c("Var","value")
@@ -782,7 +782,7 @@ colnames(Abundance) <- c("Abundance", "Taxa")
 # Joining prevalence and abundance
 df <- left_join(Prevalence, Abundance, by = "Taxa")
 
-# Melting the data for boxplot visualization
+# Melting the data for visualization
 df1 <- reshape2::melt(df, id.vars = "Taxa", value.name = "count")
 
 # Scatter plot

@@ -743,7 +743,7 @@ if (length(samples) > 0 && !all(samples == "")) {
 
 
 
-## ASVs prevalence and Abudnance
+## ASVs prevalence and Abundance
 
 <br>
 This graph depicts the prevalence and abundance of Amplicon Sequence Variants (ASVs) across multiple samples. The X-axis represent

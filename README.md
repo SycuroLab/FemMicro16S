@@ -294,8 +294,8 @@ python utils/scripts/common/prepare.py <DIR>
 | truncLen | trimming reads at this length | numeric e.g. 260, separately set for forward and reverse reads |
 | maxEE | After truncation, reads with higher than maxEE "expected errors" will be discarded. Expected errors are calculated from the nominal definition of the quality score: EE= sum(10^(-Q/10)) | numeric e.g. 2, separately set for forward and reverse reads  |
 | truncQ | Truncating reads at the first instance of a quality score less than or equal to truncQ | 2 |
-| subsample | Subsampling reads for learning error rates | False |
-| subsample2LearnErrorRate | Percentage of reads from each sample to be used | 0.25 |
+| subsample | Subsampling reads for learning error rates | True |
+| subsample2LearnErrorRate | Percentage of reads from each sample to be used | 0.2 |
 | learn_nbases | minimum number of total bases to use for error rate learning | 100000000 |
 | chimera_method | method used for chimera detection | consensus |
 | Identity | minimum percent identity for a hit to be considered a match | percentage e.g. 0.993 |

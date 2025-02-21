@@ -98,7 +98,7 @@ truncQ: 2
 #Subsampling reads for learning error rates
 ##check the logs/learnErrorRates..out file to check the quantity of bases, reads, and samples utilized for learning error rates.
 subsample: True  #True or False
-subsample2LearnErrorRate: 0.1
+subsample2LearnErrorRate: 0.2
 
 #Number of records to sample from the fastq file for plotQualityprofiling. DADA2's default is 500,000.
 nRecords: 100000

@@ -32,8 +32,19 @@ def process_file(file_path):
 def main(path):
     """The main processing function to handle file checks, creation of samples directory, and file processing."""
     if not os.path.isdir(path):
-        print(f"Input directory '{path}' does not exist. Exiting.")
-        return
+        print(f"Provided path '{path}' is not a directory or does not exist.")
+        sys.exit(1)
+
+    # Collect all .fastq or .fastq.gz files
+    fastq_files = [
+        f for f in os.listdir(path)
+        if f.endswith('.fastq') or f.endswith('.fastq.gz')
+    ]
+
+    # If no FASTQ files are found, exit with a message
+    if not fastq_files:
+        print("No FASTQ files (.fastq or .fastq.gz) found in the provided directory.")
+        sys.exit(1)
 
     # Check and possibly create a 'samples' directory
     samples_dir = 'samples'
@@ -67,4 +78,8 @@ def main(path):
             output_file.write(f"{id}\t{R1_file}\t{R2_file}\n")
 
 if __name__ == "__main__":
+        # Pass the directory path as a command-line argument
+    if len(sys.argv) < 2:
+        print("Usage: python script.py <directory_path>")
+        sys.exit(1)
     main(sys.argv[1])

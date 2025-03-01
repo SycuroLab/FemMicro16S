@@ -69,13 +69,15 @@ def main(path):
     R1_files = [file for file in read_files if '_R1_' in file or '_1.' in file]
     R2_files = [file for file in read_files if '_R2_' in file or '_2.' in file]
 
+
     # Creating the final tab-delimited file
     with open(os.path.join(samples_dir, 'samples.tsv'), 'w') as output_file:
         output_file.write("Sample_ID\tR1\tR2\n")
         for id in unique_sample_ids:
-            R1_file = next((file for file in R1_files if id in file), None)
-            R2_file = next((file for file in R2_files if id in file), None)
+            R1_file = next((f for f in R1_files if re.split(r"_R[1-2]_|_R[1-2]\.|_[1-2]\.", os.path.basename(f))[0] == id), None)
+            R2_file = next((f for f in R2_files if re.split(r"_R[1-2]_|_R[1-2]\.|_[1-2]\.", os.path.basename(f))[0] == id), None) 
             output_file.write(f"{id}\t{R1_file}\t{R2_file}\n")
+
 
 if __name__ == "__main__":
         # Pass the directory path as a command-line argument

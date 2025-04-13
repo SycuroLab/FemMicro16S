@@ -166,7 +166,7 @@ if (is.character(primer_investigation)) {
 
 if(primer_removal== TRUE & primer_investigation==TRUE){
   object_names <- list.files(in_dir, pattern = paste0(forward_read_suffix,"|",reverse_read_suffix),full.names = T)
-} else if (primer_removal== TRUE & primer_investigation==FALSE) {
+} else {
   object_names <- list.files(in_dir, pattern = paste0(forward_read_suffix,"|",reverse_read_suffix),full.names = T)
   object_names=object_names[!grepl(pattern = "primerRMV",x = object_names)]
   names<-unique(sapply(strsplit(object_names,split=paste0(forward_read_suffix,"|",reverse_read_suffix)),`[`,1))

@@ -73,7 +73,7 @@ def main(path):
     # Creating the final tab-delimited file
     with open(os.path.join(samples_dir, 'samples.tsv'), 'w') as output_file:
         output_file.write("Sample_ID\tR1\tR2\n")
-        for id in unique_sample_ids:
+        for id in sorted(unique_sample_ids):
             R1_file = next((f for f in R1_files if re.split(r"_R[1-2]_|_R[1-2]\.|_[1-2]\.", os.path.basename(f))[0] == id), None)
             R2_file = next((f for f in R2_files if re.split(r"_R[1-2]_|_R[1-2]\.|_[1-2]\.", os.path.basename(f))[0] == id), None) 
             output_file.write(f"{id}\t{R1_file}\t{R2_file}\n")

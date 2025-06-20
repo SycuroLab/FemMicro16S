@@ -13,6 +13,11 @@ exists <- file.exists(filtFs) & file.exists(filtRs)
 filtFs <- filtFs[exists]
 filtRs <- filtRs[exists]
 
+#Removing the undetermined sample
+filtFs <- filtFs[!grepl("Undetermined", filtFs)]
+filtRs <- filtRs[!grepl("Undetermined", filtRs)]
+
+
 # Create a function to count reads in a FASTQ file
 count_reads <- function(file_path) {
   reads <- readFastq(file_path)

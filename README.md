@@ -5,7 +5,7 @@
 
 [![Conda](https://img.shields.io/badge/conda-v22.11.1-lightgrey)](https://docs.conda.io/en/latest/)
 [![Snakemake](https://img.shields.io/badge/snakemake-7.32.4-blue)](https://snakemake.bitbucket.io)
-[![DADA2](https://img.shields.io/badge/DADA2-v1.26.0-orange)](https://benjjneb.github.io/dada2/index.html)
+[![DADA2](https://img.shields.io/badge/DADA2-v1.34.0-orange)](https://benjjneb.github.io/dada2/index.html)
 
 
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
@@ -160,10 +160,11 @@ pip install pyyaml
 
 #### 2.2.2 dada2 environment
 
-To install r and dada2:
+To install r:
 
 ```bash
-conda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2
+conda create -n dada2 -c conda-forge r-base=4.4.3
+conda install -n dada2 -c conda-forge -c bioconda bioconductor-dada2=1.34.0
 ```
 
 To activate the environment and install the required packages (dplyr, gridExtra, ggplot2, DECIPHER, Biostrings, limma) locally in R:

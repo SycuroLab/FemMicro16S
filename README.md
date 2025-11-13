@@ -104,12 +104,6 @@ conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/
 In the main Snakemake directory (where the Snakefile is located), create a new folder named apptainer.
 Navigate into this folder and download the required environment files using the commands provided below.
 
-Next, update all Snakemake rules located in FemMicro16S/utils/rules/ to use the corresponding .sif files from the apptainer folder instead of Conda environments.
-For example, change:
-
-conda: "dada2" 
-to: 
-apptainer: "apptainer/dada2-1.0.0.sif"
 
 ```bash
 
@@ -129,9 +123,17 @@ apptainer pull base_tools_micromamba-1.0.0.sif library://saharbagheri/femmicro16
 
 ```
 
+Next, update all Snakemake rules located in FemMicro16S/utils/rules/ to use the corresponding *.sif files from the apptainer folder instead of Conda environments.
+For example, change:
+
+conda: "dada2" 
+to 
+apptainer: "apptainer/dada2-1.0.0.sif"
+
+
 
 ### 2.2. Manual Installation of Tools and Dependencies
-We can also set up all the environments and install the tools manually. 
+You can also set up all environments and install the tools manually if you need to use specific tool versions.
 
 Note: 
 After installation, verify the installation of each tool by executing its name followed by the flag '-h'. For example, use fastqc -h to check if FastQC is installed. This command should display the help information or usage instructions for the tool, indicating successful installation.

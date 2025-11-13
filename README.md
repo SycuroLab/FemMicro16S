@@ -100,14 +100,47 @@ conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/
 
 <summary><h3 style="font-size: 24px;">2. Setting up environments</h3></summary>
 
+### 2.1. Installing Tools Using Apptainer/Singularity (Containerized Setup, recommended)
+In the main Snakemake directory (where the Snakefile is located), create a new folder named apptainer.
+Navigate into this folder and download the required environment files using the commands provided below.
+
+Next, update all Snakemake rules located in FemMicro16S/utils/rules/ to use the corresponding .sif files from the apptainer folder instead of Conda environments.
+For example, change:
+
+conda: "dada2" 
+to: 
+apptainer: "apptainer/dada2-1.0.0.sif"
+
+```bash
+
+apptainer pull qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0
+
+apptainer pull dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0
+
+apptainer pull rmd-1.0.0.sif library://saharbagheri/femmicro16s/rmd:1.0.0
+
+apptainer pull vsearch-1.0.0.sif library://saharbagheri/femmicro16s/vsearch:1.0.0
+
+apptainer pull snakemake-1.0.0.sif library://saharbagheri/femmicro16s/snakemake:1.0.0
+
+apptainer pull fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0
+
+apptainer pull base_tools_micromamba-1.0.0.sif library://saharbagheri/femmicro16s/base_tools_micromamba:1.0.0
+
+```
+
+
+### 2.2. Manual Installation of Tools and Dependencies
+We can also set up all the environments and install the tools manually. 
+
 Note: 
 After installation, verify the installation of each tool by executing its name followed by the flag '-h'. For example, use fastqc -h to check if FastQC is installed. This command should display the help information or usage instructions for the tool, indicating successful installation.
 
 For packages installed in R, initiate an R session within the same environment. Confirm the package installation by executing the library("package name") command, replacing "package name" with the actual name of the package. This will load the package in R, showing that it is properly installed and accessible in the current environment.
 
-Next we need to set up a few environments to use in different steps of the pipeline.
 
-#### 2.1. snakemake environment
+#### 2.2.1 Installing tools manually
+snakemake environment
 
 ```bash
 conda activate base
@@ -124,7 +157,7 @@ pip install pyyaml
 ```
 <br>
 
-#### 2.2. dada2 environment
+#### 2.2.2 dada2 environment
 
 To install r and dada2:
 
@@ -161,7 +194,7 @@ conda deactivate
 
 <br>
 
-#### 2.3. QC environment
+#### 2.2.3 QC environment
 
 To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
 
@@ -179,7 +212,7 @@ conda deactivate
 
 <br>
 
-#### 2.4 fastree_mafft environment 
+#### 2.2.4 fastree_mafft environment 
 
 To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
 
@@ -192,7 +225,7 @@ conda deactivate
 
 <br>
 
-#### 2.5 rmd environment
+#### 2.2.5 rmd environment
 
 ```bash
 conda create -n rmd
@@ -235,7 +268,7 @@ conda deactivate
 
 <br>
 
-#### 2.6 vsearch environment
+#### 2.2.6 vsearch environment
 
 ```
 conda create -n vsearch

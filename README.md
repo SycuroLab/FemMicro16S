@@ -141,8 +141,7 @@ After installation, verify the installation of each tool by executing its name f
 For packages installed in R, initiate an R session within the same environment. Confirm the package installation by executing the library("package name") command, replacing "package name" with the actual name of the package. This will load the package in R, showing that it is properly installed and accessible in the current environment.
 
 
-#### 2.2.1 Installing tools manually
-snakemake environment
+#### 2.2.1 snakemake environment
 
 ```bash
 conda activate base

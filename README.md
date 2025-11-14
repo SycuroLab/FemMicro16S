@@ -1,4 +1,3 @@
-
 # FemMicro16S
 ## Advancing the science of women’s health through open data sharing
 <img width="300" alt="FemMicro_logo" src="https://github.com/SycuroLab/FemMicro16S/assets/54686930/955597f7-8a13-485f-b4d9-aa17c02dddf8">
@@ -354,13 +353,22 @@ python utils/scripts/common/prepare.py <DIR>
 
 
  ```bash
- snakemake -np
- ```
+#For a local snakemake environment
+snakemake -np
+
+#For runing snakemake in container
+IMAGE="apptainer/snakemake-1.0.0.sif" 
+SNAKEMAKE="apptainer exec --bind $PWD:$PWD --pwd $PWD $IMAGE snakemake" 
+$SNAKEMAKE -np
+```
+
 Then snakemake can be executed by the following bash script:
  
- ```bash
- sbatch dada2_sbatch.sh
- ```
+```bash
+sbatch dada2_sbatch.sh #when snakemake is a local environmnet
+
+sbatch dada2_sbatch_apptainer.sh #when you want to run snakemake in container
+```
 </details>
 
 

@@ -123,13 +123,18 @@ apptainer pull base_tools_micromamba-1.0.0.sif library://saharbagheri/femmicro16
 
 ```
 
-Next, update all Snakemake rules located in FemMicro16S/utils/rules/ to use the corresponding *.sif files from the apptainer folder instead of Conda environments.
+Make sure to adjust the file names if you are using newer image versions or if your previous setup relied on local Conda environments. To do this, update all Snakemake rules in FemMicro16S/utils/rules/ so that they reference either your local environments or the appropriate .sif files in the apptainer/ folder. The default configuration now uses the Apptainer images.
+
 For example, change:
 
-conda: "dada2" 
+```bash
+conda: "dada2" #a local environment
+```
 to 
-apptainer: "apptainer/dada2-1.0.0.sif"
 
+```bash
+apptainer: "apptainer/dada2-1.0.0.sif" #an apptainer image
+```
 
 
 ### 2.2. Manual Installation of Tools and Dependencies
@@ -388,5 +393,23 @@ To make sure that the pipeline is run completely, we need to check the log and o
 | ./output/primer_status | primer_existance_raw.csv , primer_existance_trimmed.csv | Files to show primers existance before and after primer removal, if applicable |
 
 
+
+</details>
+
+<details>
+<summary><h3 style="font-size: 24px;">5. Version Check</h3></summary> 
+
+If you are using local environments, you can check the tool versions by running:
+
+`bash Version_check.sh`
+
+If you used different names for your local environments, please update them accordingly inside the bash script before running it.
+
+
+If you are using Apptainer images, you can also check the tool versions by running:
+
+`bash Version_check_apptainer.sh`
+
+Please make sure the tool versions referenced in the script match the versions of the images you have downloaded.
 
 </details>

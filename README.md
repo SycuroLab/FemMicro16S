@@ -8,19 +8,49 @@
 
 
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
-data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/dada2/index.html. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 and modified to make a workflow suitable for our needs.
+data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/dada2/index.html. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 and heavily modified to make this workflow suitable for our needs.
 
 <br>
 
-In this pipeline, species assignment is accomplished through the application of two methods:
+In this pipeline, species-level taxonomy assignment is performed using two complementary methods: DADA2 and VSEARCH and incorporates annotations from different databases: GTDB, Silva, RDP, and a vaginal field-specific database (URE).
 
-1- DADA2: a naive Bayesian classifier method (https://pubmed.ncbi.nlm.nih.gov/17586664/), where a strict requirement of a 100% nucleotide identity match between the reference sequences and the query is employed. Four different databases were used for taxonomy assignmnet. However, for final assignmnet, GTDB assignment was used and where GTDB was unable to provide an annotation for an ASV, we utilized the corresponding annotation from the URE database.
+1- DADA2: it uses a naive Bayesian classifier method (https://pubmed.ncbi.nlm.nih.gov/17586664) combined with a strict 100% nucleotide identity requirement between query ASVs and reference sequences. In this pipeline, four databases were used during the DADA2 classification step; however, for the final taxonomy, we retained GTDB-based assignments, and when GTDB did not provide an annotation for an ASV, we fell back to the corresponding URE annotation.
 
-2- VSEARCH: a global sequence alignment method with adjustable identity threshold between query and potential target sequences.
-VSEARCH, an open-source alternative to the widely utilized USEARCH tool, is employed in this context. VSEARCH excels in performing optimal global sequence alignments for the query against potential target sequences.
-For a more comprehensive understanding of this methodology, please refer to the paper available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5075697/ and the manual at https://github.com/torognes/vsearch/releases/download/v2.27.0/vsearch_manual.pdf. GTDB database was used for final taxonomy assignmnet and where GTDB was unable to provide an annotation for an ASV, we utilized the corresponding annotation from the URE database.
 
-Finally for combining the annotation results from Vsearch and DADA2, we prioritized annotations from VSEARCH over those from the DADA2 RDP classification. This approach ensures a comprehensive and accurate taxonomy assignment by leveraging the strengths of multiple databases and methodologies.
+2- VSEARCH: it is an open-source alternative to USEARCH that performs optimal global sequence alignments between query ASVs and reference sequences at user-defined identity thresholds (supports adjustable (non-100%) identity thresholds).
+For a more comprehensive understanding of this methodology, please refer to the paper available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5075697/ and the manual at https://github.com/torognes/vsearch/releases/download/v2.27.0/vsearch_manual.pdf. In this pipeline, VSEARCH classifications were generated using the GTDB database, and when GTDB lacked species information for a given ASV, the corresponding URE annotation was used instead.
+
+When integrating taxonomy assignments from VSEARCH and DADA2, we prioritized VSEARCH-derived annotations over the DADA2 RDP classifications, and GTDB-based annotations over those obtained from the field-specific URE database. In cases where the taxonomy_final entry originated from VSEARCH but the species (spp) field was missing (NA), we substituted the corresponding DADA2 species-level annotation. This strategy leverages the strengths of both methods and both databases, resulting in more complete and accurate taxonomic assignments across ASVs.
+
+
+At the end of the workflow, we generate two versions of taxonomy annotation files, allowing users to choose the format that best fits their downstream analysis:
+
+dada2_all_databases_merged.csv
+Contains taxonomic annotations from all databases side by side (e.g., GTDB, SILVA, RDP, uRE), without combining or prioritizing them.
+This file is useful for users who want to compare database outputs directly.
+
+vsearch_dada2_merged.tsv
+Provides a single, merged annotation per ASV by combining VSEARCH and DADA2 results from two main databases: the GTDB reference database and a vaginal field-specific database (URE).
+
+
+**So in summary:**
+
+We offer the option to incorporate a field-specific database into the pipeline (e.g., host- or environment-specific reference sets). When enabled, this database is prioritized after GTDB in both the VSEARCH and DADA2 workflows.
+
+For each ASV, the assignment workflow proceeds as follows:
+
+1- If VSEARCH assigns a taxonomy using GTDB → use it.
+
+2- If there is no GTDB VSEARCH hit → run VSEARCH with the user-provided field-specific database (URE when URE=TRUE).
+
+3- If no VSEARCH annotation is found → check dada2_gtdb for any level of assignment.
+
+4- If still unresolved → attempt classification with dada2_URE (when URE=TRUE).
+
+5- If VSEARCH annotation exists but spp is missing → fall back to DADA2.
+
+This multi-stage approach ensures the most complete and accurate taxonomic resolution possible, while providing flexibility depending on project needs.
+
 
 <br>
 

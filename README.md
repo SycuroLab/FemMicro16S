@@ -144,11 +144,7 @@ apptainer pull rmd-1.0.0.sif library://saharbagheri/femmicro16s/rmd:1.0.0
 
 apptainer pull vsearch-1.0.0.sif library://saharbagheri/femmicro16s/vsearch:1.0.0
 
-apptainer pull snakemake-1.0.0.sif library://saharbagheri/femmicro16s/snakemake:1.0.0
-
 apptainer pull fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0
-
-apptainer pull base_tools_micromamba-1.0.0.sif library://saharbagheri/femmicro16s/base_tools_micromamba:1.0.0
 
 ```
 
@@ -386,10 +382,6 @@ python utils/scripts/common/prepare.py <DIR>
 #For a local snakemake environment
 snakemake -np
 
-#For runing snakemake in container
-IMAGE="apptainer/snakemake-1.0.0.sif" 
-SNAKEMAKE="apptainer exec --bind $PWD:$PWD --pwd $PWD $IMAGE snakemake" 
-$SNAKEMAKE -np
 ```
 
 Then snakemake can be executed by the following bash script:
@@ -397,7 +389,6 @@ Then snakemake can be executed by the following bash script:
 ```bash
 sbatch dada2_sbatch.sh #when snakemake is a local environmnet
 
-sbatch dada2_sbatch_apptainer.sh #when you want to run snakemake in container
 ```
 </details>
 

@@ -52,6 +52,7 @@ min_overlap: 15
 max_e: 0.1
 
 ## CutAdapt parameters for quality trimming
+## This pipeline is originally for MiSeq data
 qf: 20
 qr: 20
 

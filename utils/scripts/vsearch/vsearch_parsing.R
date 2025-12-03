@@ -63,6 +63,7 @@ species_filt <- output_table %>% filter(Species_level == TRUE) %>%
     # Add a new 'Species_unique' column by extracting the unique species name from the second column
     mutate(Species_unique = gsub("\\(.*", "", V2)) %>%
     # Add a new 'Accession_number' column by extracting the accession number from the second column
+    ##### Depending on new versions of the database and its changes this part might need to be modified accordingly
     mutate(Accession_number = sub(".*\\(([^)]*).*", "\\1", V2))  %>%
     # Remove the two columns created earlier
     select(-c("V1", "V2")) %>%

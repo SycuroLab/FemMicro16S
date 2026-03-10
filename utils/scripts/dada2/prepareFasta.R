@@ -22,13 +22,13 @@ df_selected <- df %>%
 # Define the function to format taxonomy columns
 format_taxonomy <- function(row) {
   paste0(
-    "k__", row[2], ";",
-    "p__", row[3], ";",
-    "c__", row[4], ";",
-    "o__", row[5], ";",
-    "f__", row[6], ";",
-    "g__", row[7], ";",
-    "s__", row[8]
+    "k__", row[1], ";",
+    "p__", row[2], ";",
+    "c__", row[3], ";",
+    "o__", row[4], ";",
+    "f__", row[5], ";",
+    "g__", row[6], ";",
+    "s__", row[7]
   )
 }
 

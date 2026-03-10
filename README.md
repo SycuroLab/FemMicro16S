@@ -345,11 +345,11 @@ python utils/scripts/common/prepare.py <DIR>
 | output_dir | name and path to the output directory | "output" |
 | path | path to the main snakemake directory | "/home/analysis/dada2_snakemake_workflow" |
 | forward_read_suffix, reverse_read_suffix | Forward and reverse reads format | "_R1" "_R2" |
-| primer_removal | Set to TRUE to remove primers | False |
-| fwd_primer | Forward primer sequence | "CTGTCTCTTAT..." |
-| rev_primer | Reverse primer sequence | "CTGTCTCTTAT..." |
-| fwd_primer_rc | Forward primer reverse complement sequence | "CTGTCTCTTAT..." |
-| rev_primer_rc | Reverse primer reverse complement sequence | "CTGTCTCTTAT..." |
+| primer_removal | Set to TRUE to remove primers | True |
+| fwd_primer | Forward primer sequence | "CTGTCTCTTAT..." default as empty |
+| rev_primer | Reverse primer sequence | "CTGTCTCTTAT..." default as empty |
+| fwd_primer_rc | Forward primer reverse complement sequence | "CTGTCTCTTAT..." default as empty | 
+| rev_primer_rc | Reverse primer reverse complement sequence | "CTGTCTCTTAT..." default as empty |
 | min_overlap | minimum overlap length for primer detection | 15 |
 | max_e | maximum error rate allowed in primer match/detection | 0.1 |
 | qf, qr | quality trimming score | numeric e.g. 20 |
@@ -359,13 +359,13 @@ python utils/scripts/common/prepare.py <DIR>
 | truncLen | trimming reads at this length | numeric e.g. 260, separately set for forward and reverse reads |
 | maxEE | After truncation, reads with higher than maxEE "expected errors" will be discarded. Expected errors are calculated from the nominal definition of the quality score: EE= sum(10^(-Q/10)) | numeric e.g. 2, separately set for forward and reverse reads  |
 | truncQ | Truncating reads at the first instance of a quality score less than or equal to truncQ | 2 |
-| subsample | Subsampling reads for learning error rates | True |
+| subsample | Subsampling reads for learning error rates | False |
 | subsample2LearnErrorRate | Percentage of reads from each sample to be used | 0.2 |
 | learn_nbases | minimum number of total bases to use for error rate learning | 100000000 |
 | chimera_method | method used for chimera detection | consensus |
 | Identity | minimum percent identity for a hit to be considered a match | percentage e.g. 0.993 |
 | Maxaccepts | maximum number of hits to consider per query | numeric e.g. 30 |
-| URE_after_GTDB | running URE after GTDB using VSEARCH taxonomy assignment | False |
+| URE_after_GTDB | running URE after GTDB using VSEARCH taxonomy assignment | True |
 | RDP_dbs, vsearch_DBs | databases used for taxonomy assignment | |
 
 <br>

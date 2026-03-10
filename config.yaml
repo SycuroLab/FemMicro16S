@@ -123,7 +123,7 @@ seed: 100
 
 Identity: 0.993      # Minimum percent identity for a hit to be considered a match
 Maxaccepts: 30       # Maximum number of hits to consider per query
-URE_after_GTDB: False #True or False
+URE_after_GTDB: True #True or False
 
 
 

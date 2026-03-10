@@ -343,7 +343,7 @@ python utils/scripts/common/prepare.py <DIR>
 | -------------- | --------------- | ------------ |
 | input_dir | path of the input directory | "/home/data" |
 | output_dir | name and path to the output directory | "output" |
-| path | path to the main snakemake directory | "/home/analysis/FemMicro16S"" |
+| path | path to the main snakemake directory | "/home/analysis/FemMicro16S" |
 | forward_read_suffix, reverse_read_suffix | Forward and reverse reads format | "_R1" "_R2" |
 | primer_removal | Set to TRUE to remove primers | True |
 | fwd_primer | Forward primer sequence | "CTGTCTCTTAT..." default as empty |

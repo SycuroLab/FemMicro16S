@@ -57,7 +57,7 @@ qf: 20
 qr: 20
 
 ## minimum length of reads
-min_len: 50
+min_len: 60
 
 
 

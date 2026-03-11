@@ -90,7 +90,7 @@ Lastly, the **vsearchURE** rule is executed if the **URE_after_GTDB** parameter 
 <br>
 
 
-## Steps:
+## Main steps/tools:
 
 1-	**Cutadapt**: primer removal (if needed) and quality trimming of the reads.
 <br>
@@ -120,8 +120,36 @@ Please install the following tool before running this workflow. Please request a
     salloc --mem=20G --time=05:00:00
 ```
 
-conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
+### 1.1. conda (miniconda): 
 
+https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
+
+<br>
+
+### 1.2. snakemake 
+
+```bash
+conda activate base
+
+conda install -c conda-forge mamba
+
+mamba create --name snakemake
+
+mamba activate snakemake
+
+mamba install -c conda-forge -c bioconda snakemake==7.32.4
+
+pip install pyyaml
+```
+<br>
+
+### 1.3. singularity/apptainer
+If you're working on a cluster and you are deciding to use singularity check if apptainner/singularity is already installed:
+```bash
+module avail singularity
+```
+
+<br>
 </details>
 
 
@@ -129,7 +157,9 @@ conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/
 
 <summary><h3 style="font-size: 24px;">2. Setting up environments</h3></summary>
 
-### 2.1. Installing Tools Using Apptainer/Singularity (Containerized Setup, recommended)
+<br>
+
+### 2.1. Accessing Tools Using Apptainer/Singularity (Containerized Setup, recommended)
 In the main Snakemake directory (where the Snakefile is located), create a new folder named apptainer.
 Navigate into this folder and download the required environment files using the commands provided below.
 
@@ -160,7 +190,7 @@ to
 ```bash
 apptainer: "apptainer/dada2-1.0.0.sif" #an apptainer image
 ```
-
+<br>
 
 ### 2.2. Manual Installation of Tools and Dependencies
 You can also set up all environments and install the tools manually if you need to use specific tool versions.
@@ -170,25 +200,9 @@ After installation, verify the installation of each tool by executing its name f
 
 For packages installed in R, initiate an R session within the same environment. Confirm the package installation by executing the library("package name") command, replacing "package name" with the actual name of the package. This will load the package in R, showing that it is properly installed and accessible in the current environment.
 
-
-#### 2.2.1 snakemake environment
-
-```bash
-conda activate base
-
-conda install -c conda-forge mamba
-
-mamba create --name snakemake
-
-mamba activate snakemake
-
-mamba install -c conda-forge -c bioconda snakemake==7.32.4
-
-pip install pyyaml
-```
 <br>
 
-#### 2.2.2 dada2 environment
+#### 2.2.1 dada2 environment
 
 To install r:
 
@@ -226,7 +240,7 @@ conda deactivate
 
 <br>
 
-#### 2.2.3 QC environment
+#### 2.2.2 QC environment
 
 To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
 
@@ -244,7 +258,7 @@ conda deactivate
 
 <br>
 
-#### 2.2.4 fastree_mafft environment 
+#### 2.2.3 fastree_mafft environment 
 
 To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
 
@@ -257,7 +271,7 @@ conda deactivate
 
 <br>
 
-#### 2.2.5 rmd environment
+#### 2.2.4 rmd environment
 
 ```bash
 conda create -n rmd
@@ -300,7 +314,7 @@ conda deactivate
 
 <br>
 
-#### 2.2.6 vsearch environment
+#### 2.2.5 vsearch environment
 
 ```
 conda create -n vsearch

@@ -33,12 +33,10 @@ rule dada2Filter:
     output:
         R1= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
         R2= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
-        nreads= temp(config["output_dir"]+"/dada2/Nreads_filtered.txt"),
-        percent_phix= config["output_dir"]+"/dada2/percent_phix.txt"
+        nreads= temp(config["output_dir"]+"/dada2/Nreads_filtered.txt")
     params:
         samples=SAMPLES,
-        nread=config["output_dir"]+"/dada2/Nreads_filtered.txt",
-        percent_phix= config["output_dir"]+"/dada2/percent_phix.txt"
+        nread=config["output_dir"]+"/dada2/Nreads_filtered.txt"
     threads:
          config["threads"]
     conda:

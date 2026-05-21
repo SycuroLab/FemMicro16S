@@ -34,7 +34,6 @@ rule all:
         config["output_dir"]+"/phylogeny/ASV_aligned.fasta",
         config["output_dir"]+"/phylogeny/ASV_tree.nwk",
         config["output_dir"]+"/dada2/Nreads_filtered.txt",
-        config["output_dir"]+"/dada2/percent_phix.txt",
         config["output_dir"]+"/multiqc_filt/multiqc_report_filtered.html",
         config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html",
         config["output_dir"]+"/seqkit_samples/"+"temp_raw.txt",

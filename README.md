@@ -160,8 +160,8 @@ module avail singularity
 <br>
 
 ### 2.1. Accessing Tools Using Apptainer/Singularity (Containerized Setup, recommended)
-In the main Snakemake directory (where the Snakefile is located), create a new folder named apptainer.
-Navigate into this folder and download the required environment files using the commands provided below.
+In the main Snakemake directory (where the Snakefile is located), a new folder named apptainer is going to be created. Then these codes are going to be run by your job submission script to fetch the images before running the snakemake.
+
 
 
 ```bash
@@ -182,7 +182,7 @@ apptainer pull fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastre
 
 ```
 
-Make sure to adjust the file names if you are using newer image versions or if your previous setup relied on local Conda environments. To do this, update all Snakemake rules in FemMicro16S/utils/rules/ so that they reference either your local environments or the appropriate .sif files in the apptainer/ folder. The default configuration uses the local environments.
+Make sure to adjust the file names if you are using newer image versions or if your previous setup relied on local Conda environments. To do this, update all Snakemake rules in FemMicro16S/utils/rules/ so that they reference either your local environments or the appropriate .sif files in the apptainer/ folder. The default configuration is now set to use the singularity images.
 
 For example, change:
 

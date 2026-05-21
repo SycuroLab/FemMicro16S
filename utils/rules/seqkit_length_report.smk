@@ -3,7 +3,8 @@ rule list_sample:
         config["list_files"]
     output:
         "samples/seqkit_samples.tsv"
-    conda: "QC"
+    singularity: 
+        "apptainer/qc-1.0.0.sif"
     shell:
         """
         touch {output}
@@ -26,7 +27,8 @@ rule seqkit_counts_raw:
         output_dir=config["output_dir"]+"/seqkit_samples",
         output_suff1=config["forward_read_suffix"]+"_raw",
         output_suff2=config["reverse_read_suffix"]+"_raw"
-    conda: "QC"
+    singularity: 
+        "apptainer/qc-1.0.0.sif"
     shell:
         """
         while read IDS

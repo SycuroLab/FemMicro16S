@@ -166,6 +166,10 @@ Navigate into this folder and download the required environment files using the 
 
 ```bash
 
+singularity remote add SylabsCloud cloud.sylabs.io
+
+singularity remote use SylabsCloud
+
 apptainer pull qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0
 
 apptainer pull dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0

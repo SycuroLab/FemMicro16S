@@ -6,8 +6,8 @@ rule multipleAlign:
         alignment=config["output_dir"]+"/phylogeny/ASV_aligned.fasta"
     threads:
         config['threads']
-    conda:
-        "dada2"
+    apptainer:
+        "apptainer/fastree_mafft-1.0.0.sif"
     script:
         "../scripts/dada2/alignment.R"
 
@@ -20,8 +20,8 @@ rule newickTree:
         config["output_dir"]+"/phylogeny/ASV_tree.nwk"
     threads:
         config['threads']
-    conda:
-        "fastree_mafft"
+    apptainer:
+        "apptainer/fastree_mafft-1.0.0.sif"
     shell:
         """
         export OMP_NUM_THREADS={threads} && FastTreeMP -nt -gamma -spr 4 {input} > {output} || fasttree -nt -gamma -spr 4  {input} > {output}

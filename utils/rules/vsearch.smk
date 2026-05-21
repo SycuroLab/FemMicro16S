@@ -6,8 +6,8 @@ rule vsearchGTDB:
         output2= config["output_dir"]+"/vsearch/GTDB/Vsearch_GTDB_raw.tsv"
     threads:
         config['threads']
-    conda:
-        "vsearch"
+    singularity:
+        "apptainer/vsearch-1.0.0.sif"
     log:
         config["output_dir"]+"/vsearch/logs/GTDB_logfile.txt"
     params:
@@ -26,8 +26,8 @@ rule separate_vsearch_hits:
     output:
         All_ASVs=config["output_dir"]+"/vsearch/GTDB/All_results_GTDB.tsv",
         GTDB_noHIT=config["output_dir"]+"/vsearch/GTDB/no_hits_GTDB.fasta"
-    conda:
-        "dada2"  
+    singularity:
+        "apptainer/dada2-1.0.0.sif"  
     script:
         "../scripts/vsearch/vsearch.R"
 
@@ -41,8 +41,8 @@ rule vsearchURE:
         output2= config["output_dir"]+"/vsearch/URE/Vsearch_URE_raw.tsv"
     threads:
         config['threads']
-    conda:
-        "vsearch"
+    singularity:
+        "apptainer/vsearch-1.0.0.sif"
     log:
         config["output_dir"]+"/vsearch/logs/URE_logfile.txt"
     params:
@@ -74,7 +74,7 @@ rule vsearchParse:
         merged_final=config["output_dir"]+"/taxonomy/final_merged_tables/vsearch_dada2_merged.tsv"
     threads:
         config['threads']
-    conda:
-        "dada2"   
+    singularity:
+        "apptainer/dada2-1.0.0.sif"  
     script:
         "../scripts/vsearch/vsearch_parsing.R"

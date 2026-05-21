@@ -6,7 +6,7 @@ rule multipleAlign:
         alignment=config["output_dir"]+"/phylogeny/ASV_aligned.fasta"
     threads:
         config['threads']
-    apptainer:
+    singularity:
         "apptainer/fastree_mafft-1.0.0.sif"
     script:
         "../scripts/dada2/alignment.R"
@@ -20,7 +20,7 @@ rule newickTree:
         config["output_dir"]+"/phylogeny/ASV_tree.nwk"
     threads:
         config['threads']
-    apptainer:
+    singularity:
         "apptainer/fastree_mafft-1.0.0.sif"
     shell:
         """

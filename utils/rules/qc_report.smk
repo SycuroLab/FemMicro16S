@@ -8,8 +8,8 @@ rule qc_report:
         rules.separate_vsearch_hits.output,
         rules.vsearchParse.output,
         rules.combining_annotations.output
-    conda:
-        "rmd"
+    singularity:
+        "apptainer/rmd-1.0.0.sif"
     params:
         Nread=config["output_dir"]+"/dada2/Nreads.tsv",
         quality=config["path"]+"/"+config["output_dir"]+"/figures/quality/",

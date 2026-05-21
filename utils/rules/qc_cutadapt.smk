@@ -6,8 +6,8 @@ rule fastqcRaw:
         R2= config["output_dir"] + "/fastqc_raw/{sample}" + config["reverse_read_suffix"] + "_fastqc.html"
     resources:
         tmpdir=temp(directory(config["output_dir"] + "/fastqc_raw/tmp/"))
-    conda:
-        "QC"
+    singularity:
+        "apptainer/qc-1.0.0.sif"
     params:
         output=directory(config["output_dir"]+ "/fastqc_raw")
     shell: "fastqc -o {params.output} -d {resources.tmpdir} {input.R1} {input.R2} "
@@ -21,8 +21,8 @@ rule multiqcRaw:
         R2 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["reverse_read_suffix"] +"_fastqc.html",sample=SAMPLES)
     output:
         config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html"
-    conda:
-        "QC"
+    singularity:
+        "apptainer/qc-1.0.0.sif"
     params:
         fastqc_dir=config["output_dir"]+"/fastqc_raw",
         multiqc_dir=config["output_dir"]+"/multiqc_raw",
@@ -45,8 +45,8 @@ rule cutAdapt:
         e=config["max_e"]
     threads:
         config["threads"]
-    conda:
-        "QC"
+    singularity:
+        "apptainer/qc-1.0.0.sif"
     shell:
         """
         if [[ "{config[primer_removal]}" == "True" ]]; then
@@ -74,8 +74,8 @@ rule primerRMVinvestigation:
     output:
         primer_status_bf=config["output_dir"]+"/primer_status/primer_existance_raw.csv",
         primer_status_af=config["output_dir"]+"/primer_status/primer_existance_trimmed.csv"
-    conda:
-        "dada2"
+    singularity:
+        "apptainer/dada2-1.0.0.sif"
     script:
         "../scripts/dada2/primer_investigation.R"
 
@@ -94,8 +94,8 @@ rule cutAdaptQc:
         m=config["min_len"]
     threads:
         config['threads']
-    conda:
-        "QC"
+    singularity:
+        "apptainer/qc-1.0.0.sif"
     shell:
         "cutadapt -q {params.qf},{params.qr} -m {params.m} -o {output.R1} -p {output.R2} {input} "
 
@@ -110,8 +110,8 @@ rule fastqcFilt:
         R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html"
     resources:
         tempdir=temp(directory(config["output_dir"] + "/fastqc_filt/tmp/"))
-    conda:
-        "QC"
+    singularity:
+        "apptainer/qc-1.0.0.sif"
     params:
          fastqc_dir=directory(config["output_dir"]+ "/fastqc_filt")
     shell: 
@@ -125,8 +125,8 @@ rule multiqcFilt:
         R2= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html",sample=SAMPLES)
     output:
         config["output_dir"]+"/multiqc_filt/multiqc_report_filtered.html"
-    conda:
-        "QC"
+    singularity:
+        "apptainer/qc-1.0.0.sif"
     params:
         fastqc_dir=config["output_dir"]+"/fastqc_filt",
         multiqc_dir=config["output_dir"]+"/multiqc_filt",

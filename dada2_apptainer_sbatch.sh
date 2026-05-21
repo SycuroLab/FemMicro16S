@@ -24,6 +24,8 @@ snakemake --unlock
 
 mkdir -p apptainer
 
+apptainer pull apptainer/fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0
+
 apptainer pull apptainer/qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0
 
 apptainer pull apptainer/dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0

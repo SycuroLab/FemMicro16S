@@ -51,7 +51,7 @@ rule cutAdapt:
         """
         if [[ "{config[primer_removal]}" == "True" ]]; then
             cutadapt -m {params.m} -O {params.o} -e {params.e} --discard-untrimmed \
-                -g {config[fwd_primer]} -G {config[rev_primer]} \
+                -g {config[fwd_primer]} -G {config[rev_primer]} --revcomp \
                 -o {output.R1} -p {output.R2} \
                 {input.R1} {input.R2}
         else

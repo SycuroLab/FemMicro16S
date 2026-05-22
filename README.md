@@ -160,10 +160,11 @@ module avail singularity
 <br>
 
 ### 2.1. Accessing Tools Using Apptainer/Singularity (Containerized Setup, recommended)
-In the main Snakemake directory (where the Snakefile is located), a new folder named apptainer is going to be created. Then these codes are going to be run by your job submission script to fetch the images before running the snakemake.
-
 To run the pipeline using the Apptainer images, submit your jobs with: dada2_apptainer_sbatch.sh
 To run the pipeline using local environments, ensure all Snakemake files in the utils/rules/ folder are configured accordingly, then submit your jobs with: dada2_sbatch.sh
+
+When you run your pipeline using dada2_apptainer_sbatch.sh script: In the main Snakemake directory (where the Snakefile is located), a new folder named apptainer is going to be created. Then these codes are going to be run by your job submission script to fetch the images before running the snakemake.
+
 
 
 ```bash

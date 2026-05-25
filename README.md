@@ -351,7 +351,7 @@ conda deactivate
 
 Then please follow these steps to set up and run the pipeline.
 
-#### 3.1 Make sure that all the environments are set up and required packages are installed.
+#### 3.1 Make sure that all the environments are set up and required packages are installed (If you chose the manual setup).
 <br>
 
 #### 3.2 Navigate to your project directory and clone this repository into that directory using the following command:
@@ -359,6 +359,8 @@ Then please follow these steps to set up and run the pipeline.
 
 ```bash
 git clone https://github.com/SycuroLab/FemMicro16S.git
+
+cd FemMicro16S
 ```
 
 #### 3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
@@ -460,7 +462,18 @@ To make sure that the pipeline is run completely, we need to check the log and o
 </details>
 
 <details>
-<summary><h3 style="font-size: 24px;">5. Version Check</h3></summary> 
+<summary><h3 style="font-size: 24px;">5. Files and Folders Structure </h3></summary> 
+
+After running the pipeline, your folders structure should resemble the following:
+
+<img width="128" height="197" alt="image" src="https://github.com/user-attachments/assets/aead0830-397d-45ef-8a96-779f89235cd0" />
+
+
+</details>
+
+
+<details>
+<summary><h3 style="font-size: 24px;">6. Version Check</h3></summary> 
 
 If you are using local environments, you can check the tool versions by running:
 
@@ -478,7 +491,7 @@ Please make sure the tool versions referenced in the script match the versions o
 </details>
 
 <details>
-<summary><h3 style="font-size: 24px;">6. Pipeline Run Validation</h3></summary> 
+<summary><h3 style="font-size: 24px;">7. Pipeline Run Validation</h3></summary> 
 
 To perform a sanity check and ensure the pipeline completed successfully, inspect the following output and log files for any errors, warnings, or incomplete steps (replace id with the appropriate job ID):
 

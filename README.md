@@ -476,3 +476,22 @@ If you are using Apptainer images, you can also check the tool versions by runni
 Please make sure the tool versions referenced in the script match the versions of the images you have downloaded.
 
 </details>
+
+<details>
+<summary><h3 style="font-size: 24px;">5. Pipeline Run Validation</h3></summary> 
+
+To perform a sanity check and ensure the pipeline completed successfully, inspect the following output and log files for any errors, warnings, or incomplete steps (replace id with the appropriate job ID):
+
+- record_dada2.id.err
+Check for error messages, failed commands, missing files, or environment issues.
+
+- record_dada2.id.out
+Check the standard output for error messages, failed commands, missing files, or environment issues.
+
+- logs/dada2-analysis.log.txt
+Examine the main pipeline log for warnings, failed rules, unexpected interruptions, or incomplete analyses (to confirm all expected pipeline steps completed successfully).
+
+</details>
+
+
+

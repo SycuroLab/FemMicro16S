@@ -466,7 +466,7 @@ To make sure that the pipeline is run completely, we need to check the log and o
 
 After running the pipeline, your folders structure should resemble the following:
 
-<img width="128" height="197" alt="image" src="https://github.com/user-attachments/assets/aead0830-397d-45ef-8a96-779f89235cd0" />
+<img width="200" height="270" alt="image" src="Directory_Structure.png" />
 
 
 </details>

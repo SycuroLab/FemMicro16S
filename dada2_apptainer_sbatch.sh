@@ -30,19 +30,21 @@ singularity remote add SylabsCloud cloud.sylabs.io
 singularity remote use SylabsCloud
 
 
-mkdir -p apptainer
-
-apptainer pull apptainer/fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0
-
-apptainer pull apptainer/qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0
-
-apptainer pull apptainer/dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0
-
-apptainer pull apptainer/rmd-1.0.0.sif library://saharbagheri/femmicro16s/rmd:1.0.0
-
-apptainer pull apptainer/vsearch-1.0.0.sif library://saharbagheri/femmicro16s/vsearch:1.0.0
-
-
+for sif in \
+    "apptainer/fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0" \
+    "apptainer/qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0" \
+    "apptainer/dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0" \
+    "apptainer/rmd-1.0.0.sif library://saharbagheri/femmicro16s/rmd:1.0.0" \
+    "apptainer/vsearch-1.0.0.sif library://saharbagheri/femmicro16s/vsearch:1.0.0"; do
+    file=$(echo $sif | cut -d' ' -f1)
+    uri=$(echo $sif | cut -d' ' -f2)
+    if [[ ! -f "$file" ]]; then
+        mkdir -p apptainer
+        apptainer pull "$file" "$uri"
+    else
+        echo "Skipping $file — already exists"
+    fi
+done
 
 #To run snakemake and singularity
 snakemake --singularity-args "-B /bulk" --rerun-triggers mtime --latency-wait 60 --rerun-incomplete  --cluster-config cluster.json --cluster 'sbatch --partition={cluster.partition} --cpus-per-task={cluster.cpus-per-task} --nodes={cluster.nodes} --ntasks={cluster.ntasks} --time={cluster.time} --mem={cluster.mem} --output={cluster.output} --error={cluster.error}' --jobs $num_jobs --use-singularity &>> $log_dir/$log_file

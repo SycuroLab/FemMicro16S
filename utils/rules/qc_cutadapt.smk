@@ -109,7 +109,7 @@ rule fastqcFilt:
         R1= config["output_dir"]+"/fastqc_filt/{sample}"+ config["forward_read_suffix"] + "_fastqc.html",
         R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html"
     resources:
-        tempdir=temp(directory(config["output_dir"] + "/fastqc_filt/tmp/"))
+        tmpdir=temp(directory(config["output_dir"] + "/fastqc_filt/tmp/"))
     singularity:
         "apptainer/qc-1.0.0.sif"
     params:

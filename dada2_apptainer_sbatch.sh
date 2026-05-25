@@ -25,10 +25,6 @@ snakemake --unlock
 
 #Preparing apptainer envs
 
-singularity remote add SylabsCloud cloud.sylabs.io
-
-singularity remote use SylabsCloud
-
 
 for sif in \
     "apptainer/fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0" \

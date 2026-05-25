@@ -462,7 +462,7 @@ To make sure that the pipeline is run completely, we need to check the log and o
 </details>
 
 <details>
-<summary><h3 style="font-size: 24px;">5. Files and Folders Structure </h3></summary> 
+<summary><h3 style="font-size: 24px;">5. Folders Structure </h3></summary> 
 
 After running the pipeline, your folders structure should resemble the following:
 

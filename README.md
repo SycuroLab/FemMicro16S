@@ -128,16 +128,19 @@ https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
 ### 1.2. snakemake 
 
+mamba and conda do very similar things, but mamba is essentially a faster replacement for many conda operations.
+
+
 ```bash
 conda activate base
 
 conda install -c conda-forge mamba
 
-mamba create --name snakemake
+mamba create --name snakemake  
 
-mamba activate snakemake
+conda activate snakemake        
 
-mamba install -c conda-forge -c bioconda snakemake==7.32.4
+mamba install -c conda-forge -c bioconda snakemake==7.32.4      
 
 pip install pyyaml
 ```
@@ -160,6 +163,20 @@ module avail singularity
 <br>
 
 ### 2.1. Accessing Tools Using Apptainer/Singularity (Containerized Setup, recommended)
+
+
+Please first run these commands to make sure Apptainer/Singularity can properly access container images from the Sylabs cloud library and your snakemake environmnet is activavted.
+
+```bash
+
+conda activate snakemake 
+
+singularity remote add SylabsCloud cloud.sylabs.io
+
+singularity remote use SylabsCloud
+
+```
+
 To run the pipeline using the Apptainer images, submit your jobs with: dada2_apptainer_sbatch.sh
 To run the pipeline using local environments, ensure all Snakemake files in the utils/rules/ folder are configured accordingly, then submit your jobs with: dada2_sbatch.sh
 
@@ -169,19 +186,15 @@ When you run your pipeline using dada2_apptainer_sbatch.sh script: In the main S
 
 ```bash
 
-singularity remote add SylabsCloud cloud.sylabs.io
+apptainer pull apptainer/qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0
 
-singularity remote use SylabsCloud
+apptainer pull apptainer/dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0
 
-apptainer pull qc-1.0.0.sif library://saharbagheri/femmicro16s/qc:1.0.0
+apptainer pull apptainer/rmd-1.0.0.sif library://saharbagheri/femmicro16s/rmd:1.0.0
 
-apptainer pull dada2-1.0.0.sif library://saharbagheri/femmicro16s/dada2:1.0.0
+apptainer pull apptainer/vsearch-1.0.0.sif library://saharbagheri/femmicro16s/vsearch:1.0.0
 
-apptainer pull rmd-1.0.0.sif library://saharbagheri/femmicro16s/rmd:1.0.0
-
-apptainer pull vsearch-1.0.0.sif library://saharbagheri/femmicro16s/vsearch:1.0.0
-
-apptainer pull fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0
+apptainer pull apptainer/fastree_mafft-1.0.0.sif library://saharbagheri/femmicro16s/fastree_mafft:1.0.0
 
 ```
 

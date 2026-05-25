@@ -7,7 +7,7 @@ rule multipleAlign:
     threads:
         config['threads']
     singularity:
-        "apptainer/fastree_mafft-1.0.0.sif"
+        "apptainer/dada2-1.0.0.sif"
     script:
         "../scripts/dada2/alignment.R"
 

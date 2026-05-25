@@ -171,9 +171,9 @@ Please first run these commands to make sure Apptainer/Singularity can properly 
 
 conda activate snakemake 
 
-singularity remote add SylabsCloud cloud.sylabs.io
+singularity remote add SylabsCloud cloud.sylabs.io #You need to run this once
 
-singularity remote use SylabsCloud
+singularity remote use SylabsCloud #you need to run this once
 
 ```
 

@@ -198,7 +198,7 @@ apptainer pull apptainer/fastree_mafft-1.0.0.sif library://saharbagheri/femmicro
 
 ```
 
-Make sure to adjust the image file names if you are using newer image versions (e.g. qc-3.0.0.sif instead of qc-1.0.0.sif) or if your previous setup relied on local Conda environments (e.g. conda: "dada2" in all snakemake rule files in utils/rules/). To do this, update all Snakemake rules in FemMicro16S/utils/rules/ so that they reference either your local environments or the appropriate .sif files in the apptainer/ folder. The default configuration is now set to use the singularity images.
+Make sure to adjust the image file names if you are using newer image versions (e.g. qc-3.0.0.sif instead of qc-1.0.0.sif) or if your previous setup relied on local Conda environments (e.g. conda: "env name" in all snakemake rule files in utils/rules/). To do this, update all Snakemake rules in FemMicro16S/utils/rules/ so that they reference either your local environments or the appropriate .sif files in the apptainer/ folder. The default configuration is now set to use the singularity images.
 
 For example, change:
 

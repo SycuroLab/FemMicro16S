@@ -478,7 +478,7 @@ Please make sure the tool versions referenced in the script match the versions o
 </details>
 
 <details>
-<summary><h3 style="font-size: 24px;">5. Pipeline Run Validation</h3></summary> 
+<summary><h3 style="font-size: 24px;">6. Pipeline Run Validation</h3></summary> 
 
 To perform a sanity check and ensure the pipeline completed successfully, inspect the following output and log files for any errors, warnings, or incomplete steps (replace id with the appropriate job ID):
 

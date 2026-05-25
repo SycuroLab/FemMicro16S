@@ -50,7 +50,7 @@ snakemake --singularity-args "-B /bulk" --rerun-triggers mtime --latency-wait 60
 
 
 output_dir=$(grep "output_dir" < config.yaml | cut -d ' ' -f2 | sed 's/"//g')
-list_files=$(grep "sampletable" < config.yaml | cut -d ' ' -f2 | sed 's/"//g')
+list_files=$(grep "list_files" < config.yaml | cut -d ' ' -f2 | sed 's/"//g')
 
 #Copying all snakemake/log files of the run in the output folder
 snakemake_file_dir="${output_dir}/snakemake_files"

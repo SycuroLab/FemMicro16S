@@ -5,8 +5,8 @@ rule filterNsRaw:
     params:
         dir=config["output_dir"]+"/filtN/"
     output:
-        R1=expand(config["output_dir"]+"/filtN/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],sample=SAMPLES),
-        R2=expand(config["output_dir"]+"/filtN/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"],sample=SAMPLES)
+        R1=config["output_dir"]+"/filtN/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
+        R2=config["output_dir"]+"/filtN/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
     singularity:
         "apptainer/dada2-1.0.0.sif"
     script:

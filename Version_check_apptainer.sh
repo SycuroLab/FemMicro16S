@@ -8,11 +8,7 @@ echo "========== Host tools =========="
 echo "Conda:      $(conda --version 2>&1 | head -n 1)"
 echo "Mamba:      $(mamba --version 2>&1 | head -n 1)"
 echo "Pip:        $(pip --version 2>&1 | head -n 1)"
-
-echo
-echo "========== snakemake-1.0.0.sif =========="
-echo "Snakemake (snakemake-1.0.0.sif): $(apptainer exec apptainer/snakemake-1.0.0.sif snakemake --version 2>&1 | head -n 1)"
-echo "PyYAML (snakemake-1.0.0.sif):    $(apptainer exec apptainer/snakemake-1.0.0.sif python -c 'import yaml, sys; sys.stdout.write(getattr(yaml, "__version__", "?"))' 2>&1 | head -n 1)"
+set +u && source ~/softwares/miniconda/etc/profile.d/conda.sh && conda activate snakemake && set -u && echo "snakemake: $(snakemake --version)" && set +u && conda deactivate
 
 echo
 echo "========== dada2-1.0.0.sif =========="

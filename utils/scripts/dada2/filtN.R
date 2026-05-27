@@ -3,23 +3,54 @@ suppressMessages(library(dada2))
 Dir <- snakemake@params[["dir"]]
 
 if (!dir.exists(Dir)) {
-  dir.create(Dir)
+  dir.create(Dir, recursive = TRUE)
 }
 
-####Checking presence of primers before removing the primers
+fnFs <- snakemake@input[["R1"]]
+fnRs <- snakemake@input[["R2"]]
 
-fnFs <- snakemake@input[['R1']]
-fnRs <- snakemake@input[['R2']]
+fnFs.filtN <- snakemake@output[["R1"]]
+fnRs.filtN <- snakemake@output[["R2"]]
 
-fnFs.filtN <- snakemake@output[['R1']] # Put N-filtered files in filtN/ subdirectory
-fnRs.filtN <- snakemake@output[['R2']]
+percent_phix_file <- snakemake@output[["percent_phix"]]
 
-out<-filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, rm.phix=FALSE, multithread = TRUE) #This is to calculate phix reads percentage
+tmpF <- paste0(fnFs.filtN, ".no_phix_check.tmp.gz")
+tmpR <- paste0(fnRs.filtN, ".no_phix_check.tmp.gz")
 
-out1<-filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, rm.phix=TRUE, multithread = TRUE) #These results are going to be used for downstream analysis
+out_no_phix_removal <- filterAndTrim(
+  fnFs, tmpF,
+  fnRs, tmpR,
+  maxN = 0,
+  rm.phix = FALSE,
+  multithread = TRUE
+)
 
+out_with_phix_removal <- filterAndTrim(
+  fnFs, fnFs.filtN,
+  fnRs, fnRs.filtN,
+  maxN = 0,
+  rm.phix = TRUE,
+  multithread = TRUE
+)
 
-percent_phix=data.frame(percent_phix=100*(out[,2]-out1[,2])/out[,1])
+percent_phix <- data.frame(
+  sample = basename(fnFs),
+  reads_input = out_no_phix_removal[, 1],
+  reads_after_maxN_no_phix_removal = out_no_phix_removal[, 2],
+  reads_after_maxN_with_phix_removal = out_with_phix_removal[, 2],
+  percent_phix = 100 * (
+    out_no_phix_removal[, 2] - out_with_phix_removal[, 2]
+  ) / out_no_phix_removal[, 1]
+)
 
-write.table(percent_phix,snakemake@params[['percent_phix']],  sep='\t')
+write.table(
+  percent_phix,
+  percent_phix_file,
+  sep = "\t",
+  quote = FALSE,
+  row.names = FALSE
+)
+
+file.remove(tmpF)
+file.remove(tmpR)
 

@@ -34,8 +34,8 @@ rule multiqcRaw:
 
 rule cutAdapt:
     input:
-        R1=rules.filterNsRaw.output.R1,
-        R2=rules.filterNsRaw.output.R2
+        R1=config["output_dir"] + "/filtN/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
+        R2=config["output_dir"] + "/filtN/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
     output:
         R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
         R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]

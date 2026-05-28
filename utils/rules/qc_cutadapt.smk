@@ -84,7 +84,16 @@ rule primerRMVinvestigation:
 
 rule cutAdaptQc:
     input:
-        rules.cutAdapt.output if config.get("primer_removal", True) else rules.filterNsRaw.output
+        R1 = lambda wc: (
+            rules.cutAdapt.output.R1
+            if config.get("primer_removal", True)
+            else config["output_dir"] + f"/filtN/{wc.sample}" + config["forward_read_suffix"] + config["compression_suffix"]
+        ),
+        R2 = lambda wc: (
+            rules.cutAdapt.output.R2
+            if config.get("primer_removal", True)
+            else config["output_dir"] + f"/filtN/{wc.sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
+        )
     output:
         R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + config["compression_suffix"],
         R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + config["compression_suffix"]
